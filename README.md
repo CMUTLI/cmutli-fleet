@@ -13,7 +13,8 @@ Three tiers, each answering a different question:
   Podman/nginx wiring. A `programs-02.eberly.cmu.edu` host imports that same
   profile and therefore receives the identical service configuration.
   FQDN names avoid ambiguity: `www.eberly.cmu.edu` and `www.tli.cmu.edu` are
-  different profiles.
+  different profiles. The corresponding production contract lives at
+  `docs/services/<service-fqdn>.md`.
 - **Service module** (`modules/services/<domain>/<service>.nix`): reusable
   application wiring imported by its FQDN profile. It pulls in only the
   capabilities it needs (`modules/capabilities/`: Podman, nginx, Kerberos).
@@ -123,21 +124,12 @@ images to GHCR, then a `workflow_dispatch` action should SSH in as `deploy`
 to pull a specific tag or digest and restart that unit. No auto-update timer
 runs on a production host.
 
-### Programs application
+## Service documentation
 
-`programs-01.eberly.cmu.edu` hosts the Programs Rails application and its
-MySQL database. The service module reserves `/srv/programs/mysql` for the
-database volume and proxies `programs.eberly.cmu.edu` to Rails on loopback
-port 3000. The actual Quadlet definitions wait on the application image and
-its required runtime settings.
-
-For Entra, request a confidential web application registration with the
-production redirect URI `https://programs.eberly.cmu.edu/auth/<provider>/callback`
-(replace `<provider>` with the Rails OmniAuth provider path), plus the
-development/staging redirect URIs if applicable. The request should obtain
-the tenant ID, client ID, client secret, and the approved scopes/claims.
-Store only the client secret in SOPS; the other values can live in the
-application's declarative environment once confirmed.
+Production service contracts live under [`docs/services/`](docs/services/).
+They complement, rather than duplicate, the application repositories: app
+repositories document behavior and releases; this fleet documents production
+operation.
 
 ## Known gaps
 

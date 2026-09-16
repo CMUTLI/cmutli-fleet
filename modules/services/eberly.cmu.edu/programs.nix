@@ -1,7 +1,6 @@
 { ... }:
 
 {
-
   imports = [
     ../../capabilities/podman.nix
     ../../capabilities/nginx.nix
