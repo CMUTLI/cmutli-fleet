@@ -24,7 +24,4 @@
       virtualisation.quadlet.enable = true;
     };
   };
-  #
-
-
 }

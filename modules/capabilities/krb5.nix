@@ -1,10 +1,6 @@
 { ... }:
 
 {
-
-
-
-
   security.krb5 = {
     enable = true;
     settings = {
