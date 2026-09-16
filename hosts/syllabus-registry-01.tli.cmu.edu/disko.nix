@@ -9,29 +9,27 @@
       device = "/dev/sda";
       type = "disk";
       content = {
-        type = "table";
-        format = "msdos";
-        partitions = [
-          {
-            name = "root";
-            start = "1MiB";
-            end = "34GiB";
-            bootable = true;
+        type = "gpt";
+        partitions = {
+          bios = {
+            size = "1M";
+            type = "EF02";
+          };
+          root = {
+            size = "34G";
             content = {
               type = "filesystem";
               format = "ext4";
               mountpoint = "/";
             };
-          }
-          {
-            name = "swap";
-            start = "34GiB";
-            end = "100%";
+          };
+          swap = {
+            size = "100%";
             content = {
               type = "swap";
             };
-          }
-        ];
+          };
+        };
       };
     };
 
@@ -42,20 +40,17 @@
       device = "/dev/sdb";
       type = "disk";
       content = {
-        type = "table";
-        format = "msdos";
-        partitions = [
-          {
-            name = "srv";
-            start = "1MiB";
-            end = "100%";
+        type = "gpt";
+        partitions = {
+          srv = {
+            size = "100%";
             content = {
               type = "filesystem";
               format = "ext4";
               mountpoint = "/srv";
             };
-          }
-        ];
+          };
+        };
       };
     };
   };

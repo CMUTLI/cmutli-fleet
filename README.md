@@ -125,11 +125,11 @@ auto-update timer runs on a production host.
   `/home/deploy/.config/containers/systemd`.
 - `crowdstrike.nix` wires up the per-host CID secret but does not yet
   package `falcon-sensor` itself; see the TODO in that file.
-- `syllabus-registry-01`'s current device names (`/dev/sda` and `/dev/sdb`)
-  still need to be replaced with stable `/dev/disk/by-id` paths after a
-  final target check. Its 40G OS / 200G data layout and BIOS/MBR boot setup
-  are retained. `seminars-03` still assumes a placeholder `/dev/vda` disk
-  with UEFI/systemd-boot; confirm its disk and firmware before installing.
+- Both hosts use a fresh GPT layout compatible with BIOS GRUB. The
+  `syllabus-registry-01` layout retains its 40G OS / 200G `/srv` split;
+  `seminars-03` has one 40G OS disk with 1G swap. Replace the current
+  `/dev/sd*` names with stable `/dev/disk/by-id` paths after a final target
+  check.
 - `hardware-configuration.nix` for both hosts is a placeholder pending
   real hardware.
 - No `workflow_dispatch` deploy action or quadlet units exist yet; image
@@ -138,8 +138,7 @@ auto-update timer runs on a production host.
   GSSAPI ticket forwarding. A `kinit`'d admin still gets a password
   prompt; true ticket-based SSO would need `GSSAPIAuthentication` plus a
   keytab and is not set up.
-- The ACME contact address is still a placeholder in
-  `modules/capabilities/nginx.nix`; replace it before enabling a public
-  HTTPS virtual host.
+- Set `security.acme.defaults.email` to a real operational contact before
+  enabling a public HTTPS virtual host.
 - The install walkthrough deliberately has no screenshots yet; capture them
   during the first real boot and add them under `assets/`.

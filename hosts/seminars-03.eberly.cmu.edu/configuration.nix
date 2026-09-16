@@ -7,8 +7,11 @@
     ../../modules/services/eberly.cmu.edu/seminars.nix
   ];
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  # The existing system boots from an MBR disk without an EFI partition.
+  boot.loader.grub = {
+    enable = true;
+    device = "/dev/sda";
+  };
 
   # The physical hostname is distinct from the service it runs (see
   # modules/services/eberly.cmu.edu/seminars.nix for the service
