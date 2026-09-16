@@ -7,13 +7,8 @@
     ../../modules/services/tli.cmu.edu/syllabus-registry.nix
   ];
 
-  # Legacy BIOS, not UEFI: this VM's disk uses an MBR (dos) partition
-  # table with a boot flag on partition 1, which Debian's installer only
-  # produces when it detects BIOS firmware at install time.
-  boot.loader.grub = {
-    enable = true;
-    device = "/dev/sda";
-  };
+
+  boot.loader.grub.enable = true;
 
   # The physical hostname is distinct from the service it runs (see
   # modules/services/tli.cmu.edu/syllabus-registry.nix for the service definition

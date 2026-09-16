@@ -19,10 +19,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    quadlet-nix = {
-      url = "github:SEIAROTg/quadlet-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
   };
 
   outputs = inputs@{ nixpkgs, sops-nix, disko, home-manager, quadlet-nix, ... }:
