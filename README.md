@@ -27,8 +27,8 @@ Two tiers, each answering a different question:
   `configuration.nix`, a `disko.nix` (disk partitioning, see
   "Provisioning a new VM" below), and a `hardware-configuration.nix` for
   whatever else the real machine needs (CPU vendor, microcode, extra
-  kernel modules); the checked-in ones are placeholders until a machine
-  actually exists.
+  kernel modules). Capture storage-controller modules from installer media
+  before the first install so the target initrd can mount its root disk.
 
 There is no separate machine-role tier yet. Shared headless-server config
 lives in `base.nix`; a genuinely different machine role can get a module
@@ -88,10 +88,10 @@ every time. For the click-by-click version with screenshots, see
    This partitions the disk per that host's `disko.nix`, installs NixOS
    per its `configuration.nix`, and reboots into the real system. Nothing
    from the installer session persists.
-4. Once it is back up, log in as an admin and run
-   `nixos-generate-config --show-hardware-config` to fill in that host's
-   `hardware-configuration.nix` (see the Structure section above for what
-   belongs there versus in `disko.nix`).
+4. Before installing, run `nixos-generate-config --show-hardware-config` on
+   the installer and copy its hardware-specific kernel modules into the
+   host's `hardware-configuration.nix`. Keep generated filesystem and
+   bootloader entries in `disko.nix`.
 
 ## Applying a host's configuration
 
