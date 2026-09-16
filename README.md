@@ -133,9 +133,9 @@ runs on a production host.
   package `falcon-sensor` itself; see the TODO in that file.
 - Both hosts use a fresh GPT layout compatible with BIOS GRUB. The
   `syllabus-registry-01` layout retains its 40G OS / 200G `/srv` split;
-  `seminars-03` has one 40G OS disk with 1G swap. Replace the current
-  `/dev/sd*` names with stable `/dev/disk/by-id` paths after a final target
-  check.
+  `seminars-03` has one 40G OS disk with 1G swap and a verified VMware WWN.
+  `syllabus-registry-01` still needs stable `/dev/disk/by-id` paths after a
+  final target check.
 - `hardware-configuration.nix` for both hosts is a placeholder pending
   real hardware.
 - No `workflow_dispatch` deploy action or quadlet units exist yet; image

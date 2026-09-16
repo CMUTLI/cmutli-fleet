@@ -1,11 +1,8 @@
 { ... }:
 
 {
-  # The existing host has a 40 GiB BIOS disk at /dev/sda. The fresh install
-  # uses GPT with a BIOS boot partition; Disko will overwrite the device.
-  # Replace this name with a stable /dev/disk/by-id path before provisioning.
   disko.devices.disk.main = {
-    device = "/dev/sda";
+    device = "/dev/disk/by-id/wwn-0x6000c29538242cc8cd1d90d7672d4269";
     type = "disk";
     content = {
       type = "gpt";

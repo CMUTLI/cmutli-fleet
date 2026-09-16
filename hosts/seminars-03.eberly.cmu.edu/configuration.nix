@@ -10,7 +10,7 @@
   # The existing system boots from an MBR disk without an EFI partition.
   boot.loader.grub = {
     enable = true;
-    device = "/dev/sda";
+    device = "/dev/disk/by-id/wwn-0x6000c29538242cc8cd1d90d7672d4269";
   };
 
   # The physical hostname is distinct from the service it runs (see
