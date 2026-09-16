@@ -18,6 +18,7 @@
     useGlobalPkgs = true;
     useUserPackages = false;
     users.deploy = { ... }: {
+      home.stateVersion = "26.05";
       imports = [ inputs.quadlet-nix.homeManagerModules.quadlet ];
       virtualisation.quadlet.enable = true;
     };
