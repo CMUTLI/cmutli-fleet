@@ -5,36 +5,32 @@ Declarative NixOS configuration for the CMU TLI server fleet. Replaces
 
 ## Structure
 
-Two tiers, each answering a different question:
+Three tiers, each answering a different question:
 
-- **Service** (`modules/services/<domain>/<service>.nix`): what app does
-  this machine run? `tli.cmu.edu/syllabus-registry.nix`,
-  `eberly.cmu.edu/programs.nix`. Grouped by domain because a short service
-  label like `www` is not unique fleet-wide: `tli.cmu.edu/www.nix` and
-  `eberly.cmu.edu/www.nix` would be two unrelated services that happen to
-  share a name, not the same service twice. A service backed by several
-  machines (for example `www-01` and `www-02` both serving the same `www`)
-  just imports that one file on both and gets the same service definition,
-  Podman/nginx wiring, and vhost on each. A host importing a service
-  module pulls in whatever capabilities that service needs
-  (`modules/capabilities/`: podman, nginx, Kerberos); hosts do
-  not import capabilities directly.
-- **Host** (`hosts/<fqdn>/`): one physical machine, importing `base.nix`
-  plus whichever service(s) it runs. Directories are named by full FQDN,
-  not short hostname, since short hostnames are not unique across domains
-  in this fleet (a future `www-01` could exist under `core.cmu.edu`,
-  `eberly.cmu.edu`, and `tli.cmu.edu` at once). Each holds a
+- **Service profile** (`profiles/<service-fqdn>.nix`): the complete shared
+  desired state for a service pool. For example,
+  `programs.eberly.cmu.edu.nix` imports the baseline plus Programs'
+  Podman/nginx wiring. A `programs-02.eberly.cmu.edu` host imports that same
+  profile and therefore receives the identical service configuration.
+  FQDN names avoid ambiguity: `www.eberly.cmu.edu` and `www.tli.cmu.edu` are
+  different profiles.
+- **Service module** (`modules/services/<domain>/<service>.nix`): reusable
+  application wiring imported by its FQDN profile. It pulls in only the
+  capabilities it needs (`modules/capabilities/`: Podman, nginx, Kerberos).
+- **Host** (`hosts/<fqdn>/`): inventory for one physical machine. It imports
+  a service profile and holds only node-specific configuration: hostname,
+  bootloader, disks, and hardware. Directories use full FQDNs because short
+  hostnames are not unique across domains. Each holds a
   `configuration.nix`, a `disko.nix` (disk partitioning, see
   "Provisioning a new VM" below), and a `hardware-configuration.nix` for
   whatever else the real machine needs (CPU vendor, microcode, extra
   kernel modules). Capture storage-controller modules from installer media
   before the first install so the target initrd can mount its root disk.
 
-There is no separate machine-role tier yet. Shared headless-server config
-lives in `base.nix`; a genuinely different machine role can get a module
-once more than one host needs it. Secret-backed capabilities are imported
-only by the hosts that need them, so a new host can boot before its SOPS
-file exists.
+`base.nix` supplies the shared headless-server baseline through every service
+profile. A genuinely different machine role can get a profile once more than
+one host needs it. Secret-backed capabilities are imported only by profiles
+that need them, so a new host can boot before its SOPS file exists.
 
 `modules/users.nix` (imported by `base.nix`) defines the fleet-wide users:
 `deploy` (CI/deploy automation, sudo) and named human admins (sudo). All
