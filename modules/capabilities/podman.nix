@@ -10,6 +10,7 @@
   # /home/deploy/.config/containers/systemd, and persistent app data below
   # /srv should be owned by deploy.
   users.users.deploy.linger = true;
+  users.users.deploy.autoSubUidGidRange = true;
 
   # Quadlet units are declarative files in deploy's user systemd manager.
   # The NixOS module installs Podman's user generator; Home Manager owns the
@@ -24,7 +25,6 @@
     };
   };
   #
-
 
 
 }
