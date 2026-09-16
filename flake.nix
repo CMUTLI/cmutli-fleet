@@ -44,8 +44,8 @@
       ./hosts/syllabus-registry-01.tli.cmu.edu/configuration.nix
       ./hosts/syllabus-registry-01.tli.cmu.edu/disko.nix;
 
-    nixosConfigurations."seminars-03.eberly.cmu.edu" = mkHost
-      ./hosts/seminars-03.eberly.cmu.edu/configuration.nix
-      ./hosts/seminars-03.eberly.cmu.edu/disko.nix;
+    nixosConfigurations."programs-01.eberly.cmu.edu" = mkHost
+      ./hosts/programs-01.eberly.cmu.edu/configuration.nix
+      ./hosts/programs-01.eberly.cmu.edu/disko.nix;
   };
 }

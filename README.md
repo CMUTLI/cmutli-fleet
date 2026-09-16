@@ -9,7 +9,7 @@ Two tiers, each answering a different question:
 
 - **Service** (`modules/services/<domain>/<service>.nix`): what app does
   this machine run? `tli.cmu.edu/syllabus-registry.nix`,
-  `eberly.cmu.edu/seminars.nix`. Grouped by domain because a short service
+  `eberly.cmu.edu/programs.nix`. Grouped by domain because a short service
   label like `www` is not unique fleet-wide: `tli.cmu.edu/www.nix` and
   `eberly.cmu.edu/www.nix` would be two unrelated services that happen to
   share a name, not the same service twice. A service backed by several
@@ -124,16 +124,32 @@ images to GHCR, then a `workflow_dispatch` action should SSH in as `deploy`
 to pull a specific tag or digest and restart that unit. No auto-update timer
 runs on a production host.
 
+### Programs application
+
+`programs-01.eberly.cmu.edu` hosts the Programs Rails application and its
+MySQL database. The service module reserves `/srv/programs/mysql` for the
+database volume and proxies `programs.eberly.cmu.edu` to Rails on loopback
+port 3000. The actual Quadlet definitions wait on the application image and
+its required runtime settings.
+
+For Entra, request a confidential web application registration with the
+production redirect URI `https://programs.eberly.cmu.edu/auth/<provider>/callback`
+(replace `<provider>` with the Rails OmniAuth provider path), plus the
+development/staging redirect URIs if applicable. The request should obtain
+the tenant ID, client ID, client secret, and the approved scopes/claims.
+Store only the client secret in SOPS; the other values can live in the
+application's declarative environment once confirmed.
+
 ## Known gaps
 
-- `syllabus-registry-01` and `seminars-03` still need their
+- `syllabus-registry-01` and `programs-01` still need their
   `docker-compose.yml`-based services translated into quadlet units under
   `/home/deploy/.config/containers/systemd`.
 - `crowdstrike.nix` wires up the per-host CID secret but does not yet
   package `falcon-sensor` itself; see the TODO in that file.
 - Both hosts use a fresh GPT layout compatible with BIOS GRUB. The
   `syllabus-registry-01` layout retains its 40G OS / 200G `/srv` split;
-  `seminars-03` has one 40G OS disk with 1G swap and a verified VMware WWN.
+  `programs-01` has one 40G OS disk with 1G swap and a verified VMware WWN.
   `syllabus-registry-01` still needs stable `/dev/disk/by-id` paths after a
   final target check.
 - `hardware-configuration.nix` for both hosts is a placeholder pending
