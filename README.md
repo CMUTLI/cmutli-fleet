@@ -95,10 +95,14 @@ every time. For the click-by-click version with screenshots, see
 
 ## Applying a host's configuration
 
-From the repository root, after `flake.lock` has been generated and reviewed:
+From the repository root, stage the Nix changes before evaluating the flake.
+Git-aware flake evaluation otherwise ignores untracked files and can evaluate
+an older revision.
 
 ```console
+git add flake.nix modules/ hosts/
 nix --extra-experimental-features "nix-command flakes" flake lock
+git add flake.lock
 nix --extra-experimental-features "nix-command flakes" flake check --all-systems
 sudo nixos-rebuild --extra-experimental-features "nix-command flakes" test --flake ".#syllabus-registry-01.tli.cmu.edu"
 sudo nixos-rebuild switch --flake ".#syllabus-registry-01.tli.cmu.edu"
