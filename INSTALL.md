@@ -34,6 +34,17 @@ that host's `disko.nix`.
 nixos-generate-config --show-hardware-config
 ```
 
+Also record stable disk identifiers for every disk that the host's `disko.nix`
+will overwrite or mount:
+
+```console
+lsblk -o NAME,SIZE,MODEL,SERIAL
+ls -l /dev/disk/by-id
+```
+
+Match disks by size and serial, then use a `wwn-` or `scsi-` path from
+`/dev/disk/by-id` in `disko.nix`, never `/dev/sdX`.
+
 This is required even for VMs: the first installed initrd must include the
 actual virtual storage-controller driver (for example, `vmw_pvscsi`) or it may
 not find its root disk on first boot.

@@ -79,7 +79,9 @@ every time. For the click-by-click version with screenshots, see
    the host's `hardware-configuration.nix`. This is required after creating
    a new VM and before its first NixOS install: its initrd needs the detected
    storage-controller driver to mount root. Keep generated filesystem and
-   bootloader entries in `disko.nix`.
+   bootloader entries in `disko.nix`. Also record `lsblk -o
+   NAME,SIZE,MODEL,SERIAL` and `ls -l /dev/disk/by-id`; use the matching
+   `wwn-` or `scsi-` path in `disko.nix`, never `/dev/sdX`.
 4. From a machine with this repository checked out and Nix available:
 
    ```console
@@ -147,10 +149,8 @@ application's declarative environment once confirmed.
 - Both hosts use a fresh GPT layout compatible with BIOS GRUB. The
   `syllabus-registry-01` layout retains its 40G OS / 200G `/srv` split;
   `programs-01` has one 40G OS disk with 1G swap and a verified VMware WWN.
-  `syllabus-registry-01` still needs stable `/dev/disk/by-id` paths after a
-  final target check.
-- `hardware-configuration.nix` for both hosts is a placeholder pending
-  real hardware.
+- `hardware-configuration.nix` for Syllabus Registry is a placeholder pending
+  capture from that VM's installer media.
 - No `workflow_dispatch` deploy action or quadlet units exist yet; image
   pulls and service restarts remain manual until those are added.
 - Kerberos login here is PAM password auth via keyboard-interactive, not
