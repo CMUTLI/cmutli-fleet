@@ -36,4 +36,22 @@
 
   networking.firewall.enable = true;
 
+  # Fleet VMs obtain their addresses through DHCP. Match predictable and legacy
+  # Ethernet interface names so the configuration is independent of VMware's
+  # assigned interface number.
+  networking.useDHCP = false;
+  systemd.network = {
+    enable = true;
+    networks = {
+      "10-ethernet-dhcp" = {
+        matchConfig.Name = "en*";
+        networkConfig.DHCP = "yes";
+      };
+      "11-legacy-ethernet-dhcp" = {
+        matchConfig.Name = "eth*";
+        networkConfig.DHCP = "yes";
+      };
+    };
+  };
+
 }
