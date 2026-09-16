@@ -116,11 +116,13 @@ Secrets (database passwords, the CrowdStrike CID, OAuth client secrets,
 and similar) are managed with sops-nix and never committed in plaintext.
 See `secrets/README.md` for the full workflow.
 
-Containerized apps run under rootless Podman as `deploy`, via quadlet units
-(`modules/capabilities/podman.nix`). Deploys are deliberate: CI should build
-and push images to GHCR, then a `workflow_dispatch` action should SSH in as
-`deploy` to pull a specific tag or digest and restart that unit. No
-auto-update timer runs on a production host.
+Containerized apps run under rootless Podman as `deploy`, via declarative
+user-level Quadlet units (`modules/capabilities/podman.nix`). Home Manager
+owns `deploy`'s Quadlet configuration and Podman's user generator turns it
+into systemd user units. Deploys are deliberate: CI should build and push
+images to GHCR, then a `workflow_dispatch` action should SSH in as `deploy`
+to pull a specific tag or digest and restart that unit. No auto-update timer
+runs on a production host.
 
 ## Known gaps
 
