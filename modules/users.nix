@@ -5,13 +5,12 @@
   # Andrew Kerberos through SSH keyboard-interactive authentication.
   users.mutableUsers = false;
 
-  # CI and deployment automation use this normal user. Podman service units
-  # also run as deploy; see capabilities/podman.nix.
+  # CI and deployment automation use this service identity. Podman service
+  # units also run as deploy; administrators can enter it with sudo -iu deploy.
   users.users.deploy = {
     isNormalUser = true;
     uid = 1000;
     description = "";
-    extraGroups = [ "wheel" ];
     hashedPassword = "!";
     # TODO: add the CI deploy key once it's generated.
     openssh.authorizedKeys.keys = [ ];

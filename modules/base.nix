@@ -26,11 +26,13 @@
   services.openssh = {
     enable = true;
     settings = {
-      # SSH keys and Andrew Kerberos are the supported login paths.
+      # Human administrators use SSH keys or Andrew Kerberos. The deploy
+      # service identity is reached locally with sudo -iu deploy, never SSH.
       PasswordAuthentication = false;
       KbdInteractiveAuthentication = true;
       PermitRootLogin = "no";
       AllowGroups = [ "wheel" ];
+      DenyUsers = [ "deploy" ];
     };
   };
 
