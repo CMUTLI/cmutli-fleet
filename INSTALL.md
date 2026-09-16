@@ -23,7 +23,24 @@ ip a
 
 _Screenshot to capture during the first real install walkthrough._
 
-## 4. From a machine with cmutli-fleet checked out, run nixos-anywhere
+## 4. Capture the target hardware configuration
+
+Before running `nixos-anywhere`, capture the kernel modules detected by the
+installer. Copy the relevant module lists into the new host's
+`hardware-configuration.nix`; keep filesystem and bootloader configuration in
+that host's `disko.nix`.
+
+```console
+nixos-generate-config --show-hardware-config
+```
+
+This is required even for VMs: the first installed initrd must include the
+actual virtual storage-controller driver (for example, `vmw_pvscsi`) or it may
+not find its root disk on first boot.
+
+_Screenshot to capture during the first real install walkthrough._
+
+## 5. From a machine with cmutli-fleet checked out, run nixos-anywhere
 
 ```console
 nix run github:nix-community/nixos-anywhere -- --flake ".#<fqdn>" root@<installer-ip>
@@ -35,7 +52,7 @@ from step 3.
 
 _Screenshot to capture during the first real install walkthrough._
 
-## 5. Reboot
+## 6. Reboot
 
 `nixos-anywhere` partitions the disk per that host's `disko.nix`,
 installs NixOS per its `configuration.nix`, and reboots into the real

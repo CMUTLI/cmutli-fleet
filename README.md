@@ -74,7 +74,13 @@ every time. For the click-by-click version with screenshots, see
 2. On the booted installer, set a temporary root password
    (`passwd`) and note the VM's IP address. It's discarded once the real
    install boots.
-3. From a machine with this repository checked out and Nix available:
+3. Before installing, run `nixos-generate-config --show-hardware-config` on
+   the booted installer and copy its hardware-specific kernel modules into
+   the host's `hardware-configuration.nix`. This is required after creating
+   a new VM and before its first NixOS install: its initrd needs the detected
+   storage-controller driver to mount root. Keep generated filesystem and
+   bootloader entries in `disko.nix`.
+4. From a machine with this repository checked out and Nix available:
 
    ```console
    nix run github:nix-community/nixos-anywhere -- \
@@ -84,11 +90,6 @@ every time. For the click-by-click version with screenshots, see
    This partitions the disk per that host's `disko.nix`, installs NixOS
    per its `configuration.nix`, and reboots into the real system. Nothing
    from the installer session persists.
-4. Before installing, run `nixos-generate-config --show-hardware-config` on
-   the installer and copy its hardware-specific kernel modules into the
-   host's `hardware-configuration.nix`. Keep generated filesystem and
-   bootloader entries in `disko.nix`.
-
 ## Applying a host's configuration
 
 From the repository root, stage the Nix changes before evaluating the flake.
