@@ -8,6 +8,7 @@
 
   # Administration tools available on every fleet host.
   environment.systemPackages = with pkgs; [
+    age
     cowsay
     emacs-nox
     git
