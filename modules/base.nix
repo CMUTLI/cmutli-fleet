@@ -6,12 +6,15 @@
     ./capabilities/krb5.nix
   ];
 
-  # Minimal tools expected on every machine in this fleet.
+  # Administration tools available on every fleet host.
   environment.systemPackages = with pkgs; [
+    cowsay
+    emacs-nox
     git
     rsync
     tree
     htop
+    lshw
     curl
     vim
   ];
