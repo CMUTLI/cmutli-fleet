@@ -6,11 +6,13 @@
   users.mutableUsers = false;
 
   # CI and deployment automation use this service identity. Podman service
-  # units also run as deploy; administrators can enter it with sudo -iu deploy.
+  # units also run as deploy; it may perform privileged deployment actions
+  # locally through sudo, but may not authenticate through SSH.
   users.users.deploy = {
     isNormalUser = true;
     uid = 1000;
     description = "";
+    extraGroups = [ "wheel" ];
     hashedPassword = "!";
     # TODO: add the CI deploy key once it's generated.
     openssh.authorizedKeys.keys = [ ];
