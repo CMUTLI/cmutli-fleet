@@ -8,6 +8,12 @@
    systemctl start sshd
    ip -br addr
    ```
+
+   From the control machine:
+
+   ```console
+   ssh root@<installer-ip>
+   ```
 3. Verify the target disks. Disko overwrites every configured disk.
 
    ```console
