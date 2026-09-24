@@ -52,5 +52,9 @@
     nixosConfigurations."programs-01.eberly.cmu.edu" = mkHost
       ./hosts/programs-01.eberly.cmu.edu/configuration.nix
       ./hosts/programs-01.eberly.cmu.edu/disko.nix;
+
+    nixosConfigurations."ops-01.tli.cmu.edu" = mkHost
+      ./hosts/ops-01.tli.cmu.edu/configuration.nix
+      ./hosts/ops-01.tli.cmu.edu/disko.nix;
   };
 }
