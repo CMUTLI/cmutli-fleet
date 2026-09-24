@@ -13,7 +13,6 @@
   users.users.deploy = {
     isNormalUser = true;
     uid = 1000;
-    description = "";
     hashedPassword = "!";
     openssh.authorizedKeys.keys = [ ];
   };

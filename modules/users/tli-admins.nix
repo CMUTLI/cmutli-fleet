@@ -4,7 +4,6 @@
   users.users.meribyte = {
     isNormalUser = true;
     uid = 1001;
-    description = "";
     extraGroups = [ "wheel" ];
     hashedPassword = "!";
     openssh.authorizedKeys.keys = [
@@ -15,7 +14,6 @@
   users.users.martinv = {
     isNormalUser = true;
     uid = 1002;
-    description = "";
     extraGroups = [ "wheel" ];
     hashedPassword = "!";
     openssh.authorizedKeys.keys = [
