@@ -11,6 +11,8 @@
     "d /srv/programs/mysql 0700 deploy deploy -"
   ];
 
+  security.acme.certs."programs.eberly.cmu.edu".email = "certificates@eberly.cmu.edu";
+
   services.nginx.virtualHosts."programs.eberly.cmu.edu" = {
     forceSSL = true;
     enableACME = true;

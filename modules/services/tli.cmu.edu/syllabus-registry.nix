@@ -18,6 +18,8 @@
     "d /srv/syllabus-registry 0750 deploy deploy -"
   ];
 
+  security.acme.certs."syllabus-registry.tli.cmu.edu".email = "certificates@tli.cmu.edu";
+
   services.nginx.virtualHosts."syllabus-registry.tli.cmu.edu" = {
     forceSSL = true;
     enableACME = true;

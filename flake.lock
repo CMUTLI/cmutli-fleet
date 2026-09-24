@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "cmutli-fleet-secrets": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1789596457,
+        "narHash": "sha256-E8ZlejajqzEKUdlSO52CmuhfaEBsbNfTDuOyHmwocZQ=",
+        "ref": "refs/heads/main",
+        "rev": "80219886c460d97d6fb8eb15436775f87a5f70a2",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/CMUTLI/cmutli-fleet-secrets.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/CMUTLI/cmutli-fleet-secrets.git"
+      }
+    },
     "disko": {
       "inputs": {
         "nixpkgs": [
@@ -74,6 +90,7 @@
     },
     "root": {
       "inputs": {
+        "cmutli-fleet-secrets": "cmutli-fleet-secrets",
         "disko": "disko",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",

@@ -1,6 +1,6 @@
-{ config, ... }:
+{ config, inputs, ... }:
 
 {
-  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-  sops.defaultSopsFile = ../../secrets + "/${config.networking.hostName}.yaml";
+  sops.age.keyFile = "/var/lib/sops-age/identity.txt";
+  sops.defaultSopsFile = inputs."cmutli-fleet-secrets" + "/hosts/${config.networking.fqdn}.yaml";
 }

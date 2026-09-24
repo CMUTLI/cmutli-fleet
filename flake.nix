@@ -9,6 +9,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    cmutli-fleet-secrets = {
+      url = "git+ssh://git@github.com/CMUTLI/cmutli-fleet-secrets.git";
+      flake = false;
+    };
+
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
