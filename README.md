@@ -1,4 +1,4 @@
-# cmutli-fleet
+# CMU TLI NixOS Fleet
 
 NixOS configuration for CMU TLI servers.
 
