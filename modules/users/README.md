@@ -1,10 +1,9 @@
-# Host-specific users
+# User classes
 
-Put users and groups that do not belong on every host in this directory.
-Import the class from each applicable host configuration.
+Put reusable user and group classes in this directory. Import fleet-wide
+classes from `modules/users.nix`; import host-specific classes from the
+applicable host configuration.
 
 ```nix
 imports = [ ../../modules/users/tli-admins.nix ];
 ```
-
-Keep fleet-wide accounts in `modules/users.nix`.
