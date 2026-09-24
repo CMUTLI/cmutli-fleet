@@ -1,10 +1,7 @@
 # Service documentation
 
-One document per service FQDN describes the production contract shared by its
-host pool. It covers routing, persistent storage, runtime units, operational
-secrets, deployment, rollback, and service-specific runbooks.
+One document per service FQDN. Document routing, storage, runtime units,
+secrets references, deployment, rollback, and operational ownership.
 
-Application repositories remain the source of truth for application behavior:
-architecture, development setup, environment-variable semantics, migrations,
-and release construction. Fleet documents describe only how a released
-application is operated here.
+Application repositories document application behavior, development,
+migrations, and releases.

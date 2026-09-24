@@ -1,31 +1,25 @@
 # programs.eberly.cmu.edu
 
-## Scope
+## Profile
 
-The Programs service runs a Rails application and MySQL database under
-rootless Podman. Its service profile is
-`profiles/programs.eberly.cmu.edu.nix`; each pool member imports that profile.
+`profiles/programs.eberly.cmu.edu.nix`
 
-## Network and storage
+## Runtime
 
-Nginx terminates TLS for `programs.eberly.cmu.edu` and proxies to Rails on
-`127.0.0.1:3000`. MySQL data persists at `/srv/programs/mysql`, owned by
-`deploy`.
+- Rails and MySQL run as rootless `deploy` Podman units.
+- Nginx terminates TLS and proxies to Rails at `127.0.0.1:3000`.
+- MySQL has no host-published port.
+- MySQL data is `/srv/programs/mysql`.
 
-## Runtime and secrets
+## Secrets and identity
 
-The Rails and MySQL Quadlet units are not yet defined. Add their image
-references, database connection settings, and health checks with the service
-implementation. Put secret values in the host's SOPS file; do not commit them
-here.
+- Store database, Rails, and Entra secret values in the private secrets repo.
+- Entra registration requires tenant ID, client ID, client secret, scopes,
+  claims, and the exact Rails callback URI.
 
-Entra requires a confidential web-application registration. Record the tenant
-ID, client ID, approved scopes and claims, and exact redirect URI from the
-Rails OmniAuth provider. Store only the client secret in SOPS.
+## Pending
 
-## Operations
-
-Run image pulls and Quadlet restarts in the `deploy` user context; an
-administrator enters it locally with `sudo -iu deploy`. The host configuration
-and service profile are deployed as an exact Git revision. Application
-behavior, migrations, and release construction belong in the Rails repository.
+- Rails and MySQL image references
+- Database names and users
+- Quadlet units and health checks
+- Backup and restore procedure
