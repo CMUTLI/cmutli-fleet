@@ -44,7 +44,6 @@
       PasswordAuthentication = false;
       KbdInteractiveAuthentication = true;
       PermitRootLogin = "no";
-      AllowGroups = [ "wheel" ];
       DenyUsers = [ "deploy" ];
     };
   };
