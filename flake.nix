@@ -29,8 +29,10 @@
 
   outputs = inputs@{ nixpkgs, sops-nix, disko, home-manager, quadlet-nix, ... }:
     let
+      system = "x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.${system};
       mkHost = hostModule: diskModule: nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
+        inherit system;
         specialArgs = { inherit inputs; };
         modules = [
           hostModule
@@ -42,6 +44,15 @@
         ];
       };
     in {
+    devShells.${system}.default = pkgs.mkShell {
+      packages = with pkgs; [
+        age
+        git
+        git-lfs
+        sops
+      ];
+    };
+
     # Keyed by FQDN, not short hostname: short hostnames are not unique
     # across domains in this fleet (for example a future www-01 could
     # exist under core.cmu.edu, eberly.cmu.edu, and tli.cmu.edu at once).
