@@ -1,7 +1,7 @@
 # Install a host
 
 1. Boot official NixOS installer media.
-2. Set a temporary installer root password and start SSH.
+2. Set a temporary installer password and start SSH.
 
    ```console
    passwd
@@ -12,7 +12,7 @@
    From the control machine:
 
    ```console
-   ssh root@<installer-ip>
+   ssh nixos@<installer-ip>
    ```
 3. Verify the target disks. Disko overwrites every configured disk.
 
@@ -34,7 +34,7 @@
 
    ```console
    nix run github:nix-community/nixos-anywhere -- \
-     --flake ".#<host-fqdn>" root@<installer-ip>
+     --flake ".#<host-fqdn>" nixos@<installer-ip>
    ```
 
 `nixos-anywhere` partitions the configured disks, installs the selected host,
