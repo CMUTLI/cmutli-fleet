@@ -48,7 +48,6 @@
       packages = with pkgs; [
         age
         git
-        git-lfs
         sops
       ];
     };

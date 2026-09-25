@@ -8,7 +8,7 @@ NixOS configuration for CMU TLI servers.
 nix develop
 ```
 
-The development shell provides Git, Git LFS, age, and SOPS.
+The development shell provides Git, age, and SOPS.
 
 ## Layout
 
