@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 {
   imports = [
@@ -21,6 +21,8 @@
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  users.users.root.hashedPasswordFile =
+    inputs."cmutli-fleet-secrets" + "/root-password-hash";
   nix.gc = {
     automatic = true;
     dates = "weekly";
