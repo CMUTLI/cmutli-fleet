@@ -6,11 +6,6 @@
 
 ## Runtime
 
-Nginx terminates TLS and proxies the current application endpoint to
-`127.0.0.1:3001`.
-
-## Pending
-
-- Compose-to-Quadlet migration
-- Persistent-data layout
-- Deployment, backup, and restore procedures
+- Nginx terminates TLS and proxies to `127.0.0.1:3001`.
+- Rootless Podman is enabled for `deploy`.
+- The fleet does not yet declare application units or persistent storage.

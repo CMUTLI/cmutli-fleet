@@ -41,17 +41,17 @@ installer media before the first install.
 Stage Nix changes before evaluating a Git flake.
 
 ```console
-git add flake.nix flake.lock modules/ profiles/ hosts/
+git add <changed-files>
 nix --extra-experimental-features "nix-command flakes" flake check --all-systems
 sudo nixos-rebuild --extra-experimental-features "nix-command flakes" test --flake ".#<host-fqdn>"
 sudo nixos-rebuild switch --flake ".#<host-fqdn>"
 ```
 
-For a remote host, build on the target until its Nix daemon trusts the deploy
-controller:
+For a remote host from a non-NixOS control machine, build and activate on the
+target:
 
 ```console
-nixos-rebuild switch --flake ".#<host-fqdn>" \
+nix run nixpkgs#nixos-rebuild -- switch --flake ".#<host-fqdn>" \
   --build-host <admin>@<host-fqdn> \
   --target-host <admin>@<host-fqdn> --sudo --ask-sudo-password --use-substitutes
 ```
