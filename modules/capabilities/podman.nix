@@ -7,8 +7,8 @@
   };
 
   # All rootless containers run as deploy. Quadlet units belong in
-  # /home/deploy/.config/containers/systemd, and persistent app data below
-  # /srv should be owned by deploy.
+  # /home/deploy/.config/containers/systemd, and persistent app data in
+  # /var/lib/<service> should be owned by deploy.
   users.users.deploy.linger = true;
   users.users.deploy.autoSubUidGidRange = true;
 

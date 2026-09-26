@@ -7,8 +7,8 @@
   ];
 
   systemd.tmpfiles.rules = [
-    "d /srv/programs 0750 deploy deploy -"
-    "d /srv/programs/mysql 0700 deploy deploy -"
+    "d /var/lib/programs 0750 deploy deploy -"
+    "d /var/lib/programs/mysql 0700 deploy deploy -"
   ];
 
   security.acme.certs."programs.eberly.cmu.edu".email = "certificates@eberly.cmu.edu";

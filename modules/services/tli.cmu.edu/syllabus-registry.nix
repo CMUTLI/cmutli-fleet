@@ -15,7 +15,7 @@
   ];
 
   systemd.tmpfiles.rules = [
-    "d /srv/syllabus-registry 0750 deploy deploy -"
+    "d /var/lib/syllabus-registry 0750 deploy deploy -"
   ];
 
   security.acme.certs."syllabus-registry.tli.cmu.edu".email = "certificates@tli.cmu.edu";

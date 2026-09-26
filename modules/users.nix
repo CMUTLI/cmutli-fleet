@@ -10,8 +10,8 @@
   # Andrew Kerberos through SSH keyboard-interactive authentication.
   users.mutableUsers = false;
 
-  # deploy has its own primary group so service data below /srv can be
-  # restricted to it rather than shared with every normal user.
+  # deploy has its own primary group so service data in /var/lib/<service> can
+  # be restricted to it rather than shared with every normal user.
   users.groups.deploy.gid = 1000;
   users.users.deploy = {
     isNormalUser = true;
