@@ -71,7 +71,7 @@ in
   imports = [ ./secrets.nix ];
 
   options.cmutli.crowdstrike.tenant = lib.mkOption {
-    type = lib.types.enum [ "tli" "eberly" ];
+    type = lib.types.enum [ "tli" "tli-workstation" "cmu" ];
     default = "tli";
     description = "Falcon tenant whose CID this host enrolls with.";
   };
