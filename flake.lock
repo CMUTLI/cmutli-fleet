@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "cmutli-dashboards": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790388031,
+        "narHash": "sha256-LHc7N0m6W9+LudbbhDqQLKMeO560lUI4+yr00ABtY/E=",
+        "owner": "CMUTLI",
+        "repo": "cmutli-dashboards",
+        "rev": "545ab39ab352820ebea7e5b31f54ee5aa1bce143",
+        "type": "github"
+      },
+      "original": {
+        "owner": "CMUTLI",
+        "repo": "cmutli-dashboards",
+        "type": "github"
+      }
+    },
     "cmutli-fleet-secrets": {
       "flake": false,
       "locked": {
@@ -108,6 +124,7 @@
     },
     "root": {
       "inputs": {
+        "cmutli-dashboards": "cmutli-dashboards",
         "cmutli-fleet-secrets": "cmutli-fleet-secrets",
         "cmutli-fleet-vendor": "cmutli-fleet-vendor",
         "disko": "disko",

@@ -19,6 +19,11 @@
       flake = false;
     };
 
+    cmutli-dashboards = {
+      url = "github:CMUTLI/cmutli-dashboards";
+      flake = false;
+    };
+
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
