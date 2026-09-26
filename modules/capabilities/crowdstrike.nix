@@ -71,9 +71,13 @@ in
   imports = [ ./secrets.nix ];
 
   options.cmutli.crowdstrike.tenant = lib.mkOption {
-    type = lib.types.enum [ "tli" "tli-workstation" "cmu" ];
-    default = "tli";
-    description = "Falcon tenant whose CID this host enrolls with.";
+    type = lib.types.enum [ "tli-servers" "tli-workstations" "cmu-home" ];
+    default = "tli-servers";
+    description = ''
+      Falcon tenant whose CID this host enrolls with. The values correspond to
+      the Falcon console's "TLI Servers", "TLI Workstations", and "Carnegie
+      Mellon University Home CID".
+    '';
   };
 
   config = lib.mkMerge [
