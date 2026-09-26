@@ -13,6 +13,7 @@
     emacs-nox
     git
     rsync
+    sops
     tree
     htop
     lshw
