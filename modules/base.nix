@@ -3,6 +3,7 @@
 {
   imports = [
     ./users.nix
+    ./ssh-key-policy.nix
     ./capabilities/krb5.nix
     ./capabilities/secrets.nix
     ./capabilities/crowdstrike.nix
