@@ -14,6 +14,11 @@
       flake = false;
     };
 
+    cmutli-fleet-vendor = {
+      url = "git+ssh://git@github.com/CMUTLI/cmutli-fleet-vendor.git?lfs=1";
+      flake = false;
+    };
+
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";

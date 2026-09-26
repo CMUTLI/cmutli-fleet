@@ -5,6 +5,7 @@
     ./users.nix
     ./capabilities/krb5.nix
     ./capabilities/secrets.nix
+    ./capabilities/crowdstrike.nix
   ];
 
   # Administration tools available on every fleet host.

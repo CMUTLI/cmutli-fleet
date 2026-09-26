@@ -16,6 +16,24 @@
         "url": "ssh://git@github.com/CMUTLI/cmutli-fleet-secrets.git"
       }
     },
+    "cmutli-fleet-vendor": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790365501,
+        "lfs": true,
+        "narHash": "sha256-nBRfyBrVKZZAc/RHJnqxNmP2f2I19nwNaVXlKDyTpP4=",
+        "ref": "refs/heads/main",
+        "rev": "6562caa695964c7c792d13fc36c6f28788ee4512",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/CMUTLI/cmutli-fleet-vendor.git"
+      },
+      "original": {
+        "lfs": true,
+        "type": "git",
+        "url": "ssh://git@github.com/CMUTLI/cmutli-fleet-vendor.git"
+      }
+    },
     "disko": {
       "inputs": {
         "nixpkgs": [
@@ -91,6 +109,7 @@
     "root": {
       "inputs": {
         "cmutli-fleet-secrets": "cmutli-fleet-secrets",
+        "cmutli-fleet-vendor": "cmutli-fleet-vendor",
         "disko": "disko",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
