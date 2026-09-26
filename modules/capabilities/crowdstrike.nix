@@ -24,8 +24,10 @@ let
   };
 
   # falcond keeps its state beside its binaries and refuses a symlinked
-  # /opt/CrowdStrike, so the package is copied into a real directory. A
-  # sensor that has already updated itself to a newer build is left alone.
+  # /opt/CrowdStrike, so the package is copied into a real directory on every
+  # start. A sensor that has already updated itself to a newer build is left
+  # alone. Only binaries are copied; the sensor's state files are not in the
+  # package.
   #
   # An enrolled sensor keeps its CID. Changing tenants re-enrolls the host as
   # a new Falcon host, so a mismatch is reported rather than corrected.
@@ -42,8 +44,8 @@ let
     install -d -m 0750 "$dst"
 
     current=$(readlink "$dst/falcond" 2>/dev/null | sed 's/^falcond//' || true)
-    if [ -z "$current" ] || [ "$current" -lt ${build} ]; then
-      cp -a --remove-destination --no-preserve=ownership,mode "$src/." "$dst/"
+    if [ -z "$current" ] || [ "$current" -le ${build} ]; then
+      cp -a --remove-destination --no-preserve=ownership "$src/." "$dst/"
       chmod -R u+w,go-w,o-rwx "$dst"
       chmod 0755 "$dst/falcon-flow${build}"
     fi
