@@ -7,6 +7,7 @@
     extraGroups = [ "wheel" ];
     hashedPassword = "!";
     openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID+3OlnHJ5PmM0GTvvuzmk+rKQNmjtV0D9bGVFjPXdSe meribyte@hackwrench tli"
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCt/s1THeyqDVZJr4OI+msOIjZCbquna8OVgi6EuA3Z5Thg3sNXJkP/ILX/rq0PlS/8Qz62EcDh8uleI0oYEAwMuRBiWroB6fiiD+QW6IxqZE84JFhgH8dx7CTZ7KmHp/dq9bW6LZdN8BGJ9ZYfyHC0O7W7cSpBCYhW+bIz6ERallj5R7m4vrZhgtg3Wo6MIClrSRFWfV1E90DSOMtaAd7hEllg8t/EfzteDV51qahG7JmVcbrPbIkfCUjR2VS+mNnDw/w4bUkPxyJdiU/FjJsIB8LWnwYp5LDXPMs0ax1KG5Z/HCsms3NVIDzm+134NzJWrHwQhYUbXrIenidpE0jjNx3im/5Ze5iBwY2j43XHlJl4fRAga839RgDf5uVTXIeK2wuySllPfNCfa/yXpllWjvWLmsEK+KG8EPhCzykP1o9Lju3zUBlddzeablt/ahcxpA2TFTbVNI/CsOLTmQF+xm5tnK2Y1CB3kXOfoCikWNEZnxNbMY26Ac2lYXKv4xzOI/i8Yso8pqVXqAxpVY45rCDTWGIbKVxujoLQdslfoaTphFRcqlhePc2Up3BxrtVa4thfJjIco/M52LJ34Ek5eZpU69WHBlS5QY8xBaYmJPkrJIILBOzuP3yTR68kAeG3pJjlnFg5+9ptw5LjEe2tWy6NXd/pmH8r26ELf9VnjQ=="
     ];
   };
