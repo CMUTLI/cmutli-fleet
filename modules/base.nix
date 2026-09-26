@@ -1,9 +1,10 @@
-{ pkgs, inputs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   imports = [
     ./users.nix
     ./capabilities/krb5.nix
+    ./capabilities/secrets.nix
   ];
 
   # Administration tools available on every fleet host.
@@ -22,8 +23,17 @@
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  # The fleet root password verifier is decrypted at activation into a
+  # root-only file. Until a host's identity is added to fleet.yaml, root stays
+  # locked; administrators use their own accounts and sudo.
+  sops.secrets.root-password-hash = {
+    sopsFile = inputs."cmutli-fleet-secrets" + "/fleet.yaml";
+    neededForUsers = true;
+  };
   users.users.root.hashedPasswordFile =
-    inputs."cmutli-fleet-secrets" + "/root-password-hash";
+    config.sops.secrets.root-password-hash.path;
+
   nix.gc = {
     automatic = true;
     dates = "weekly";
