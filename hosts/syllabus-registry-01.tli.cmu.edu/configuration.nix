@@ -12,5 +12,7 @@
   networking.hostName = "syllabus-registry-01";
   networking.domain = "tli.cmu.edu";
 
+  cmutli.crowdstrike.tenant = "tli-servers";
+
   system.stateVersion = "26.05";
 }

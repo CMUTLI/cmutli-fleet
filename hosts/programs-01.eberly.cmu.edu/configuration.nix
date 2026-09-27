@@ -12,5 +12,7 @@
   networking.hostName = "programs-01";
   networking.domain = "eberly.cmu.edu";
 
+  cmutli.crowdstrike.tenant = "tli-servers";
+
   system.stateVersion = "26.05";
 }

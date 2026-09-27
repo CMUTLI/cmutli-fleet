@@ -6,7 +6,7 @@ let
 
   # Each Falcon tenant has its own CID, encrypted only to that tenant's hosts.
   cidFile = inputs."cmutli-fleet-secrets" + "/crowdstrike/${cfg.tenant}.yaml";
-  haveCid = builtins.pathExists cidFile;
+  haveCid = cfg.tenant != null && builtins.pathExists cidFile;
 
   # The upstream binaries run unmodified through nix-ld. Patching them would
   # break the sensor's own integrity checks and self-updates.
@@ -71,18 +71,25 @@ in
   imports = [ ./secrets.nix ];
 
   options.cmutli.crowdstrike.tenant = lib.mkOption {
-    type = lib.types.enum [ "tli-servers" "tli-workstations" "cmu-home" ];
-    default = "tli-servers";
+    type = lib.types.nullOr
+      (lib.types.enum [ "tli-servers" "tli-workstations" "cmu-home" ]);
+    default = null;
     description = ''
       Falcon tenant whose CID this host enrolls with. The values correspond to
       the Falcon console's "TLI Servers", "TLI Workstations", and "Carnegie
-      Mellon University Home CID".
+      Mellon University Home CID". Every host must choose one; enrolling in the
+      wrong tenant applies the wrong policies and requires re-enrollment.
     '';
   };
 
   config = lib.mkMerge [
     {
-      warnings = lib.optional (!haveCid)
+      assertions = [{
+        assertion = cfg.tenant != null;
+        message = "${config.networking.fqdn}: set cmutli.crowdstrike.tenant to "
+          + "tli-servers, tli-workstations, or cmu-home.";
+      }];
+      warnings = lib.optional (cfg.tenant != null && !haveCid)
         "Falcon sensor disabled: cmutli-fleet-secrets has no crowdstrike/${cfg.tenant}.yaml.";
     }
 

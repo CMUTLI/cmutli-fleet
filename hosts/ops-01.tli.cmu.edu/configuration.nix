@@ -11,5 +11,7 @@
   networking.hostName = "ops-01";
   networking.domain = "tli.cmu.edu";
 
+  cmutli.crowdstrike.tenant = "tli-servers";
+
   system.stateVersion = "26.05";
 }
