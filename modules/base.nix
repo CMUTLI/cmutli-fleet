@@ -25,6 +25,7 @@
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  zramSwap.enable = true;
 
   # The fleet root password verifier is decrypted at activation into a
   # root-only file. Until a host's identity is added to fleet.yaml, root stays
