@@ -12,7 +12,7 @@
           type = "EF02";
         };
         swap = {
-          size = "1G";
+          size = "2G";
           content.type = "swap";
         };
         root = {
