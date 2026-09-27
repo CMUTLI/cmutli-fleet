@@ -6,6 +6,7 @@
     ./ssh-key-policy.nix
     ./capabilities/krb5.nix
     ./capabilities/secrets.nix
+    ./capabilities/node-exporter-mtls.nix
     ./capabilities/crowdstrike.nix
   ];
 

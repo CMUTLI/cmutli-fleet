@@ -1,8 +1,17 @@
-{ config, inputs, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 
 let
   adminPassword = "/srv/ops/grafana/admin-password";
   grafanaFiles = inputs.cmutli-dashboards + "/grafana";
+  clientSecret = inputs."cmutli-fleet-secrets" + "/monitoring/client.yaml";
+  caCertificate = ../../../certs/monitoring-ca.pem;
+  mtlsAvailable = builtins.pathExists clientSecret
+    && builtins.pathExists caCertificate
+    && config.cmutli.monitoring.nodeTlsAvailable;
+  monitoredHosts = lib.filter
+    (fqdn: builtins.pathExists
+      (inputs."cmutli-fleet-secrets" + "/monitoring/hosts/${fqdn}.yaml"))
+    (builtins.attrNames inputs.self.nixosConfigurations);
   createAdminPassword = pkgs.writeShellScript "grafana-create-admin-password" ''
     set -eu
     if [ ! -s ${adminPassword} ]; then
@@ -17,6 +26,11 @@ in
     ../../capabilities/nginx.nix
   ];
 
+  assertions = [{
+    assertion = !config.cmutli.monitoring.nodeTlsAvailable || mtlsAvailable;
+    message = "ops-01 needs its Prometheus client certificate before enabling node exporter TLS";
+  }];
+
   systemd.tmpfiles.rules = [
     "d /srv/ops 0750 deploy deploy -"
     "d /srv/ops/grafana 0700 deploy deploy -"
@@ -28,17 +42,46 @@ in
     listenAddress = "127.0.0.1";
     port = 9090;
     extraFlags = [ "--storage.tsdb.retention.size=4GB" ];
-    exporters.node = {
+    exporters.node = lib.mkIf (!mtlsAvailable) {
       enable = true;
       listenAddress = "127.0.0.1";
     };
-    scrapeConfigs = [{
+    scrapeConfigs = lib.optional (!mtlsAvailable) {
       job_name = "node";
       static_configs = [{
         targets = [ "127.0.0.1:9100" ];
         labels.instance = config.networking.fqdn;
       }];
-    }];
+    } ++ lib.optional mtlsAvailable {
+      job_name = "node";
+      scheme = "https";
+      tls_config = {
+        ca_file = caCertificate;
+        cert_file = config.sops.secrets.prometheus-client-cert.path;
+        key_file = config.sops.secrets.prometheus-client-key.path;
+      };
+      static_configs = map (fqdn: {
+        targets = [ "${fqdn}:9100" ];
+        labels.instance = fqdn;
+      }) monitoredHosts;
+    };
+  };
+
+  sops.secrets = lib.mkIf mtlsAvailable {
+    prometheus-client-cert = {
+      sopsFile = clientSecret;
+      key = "certificate";
+      owner = "prometheus";
+      group = "prometheus";
+      mode = "0440";
+    };
+    prometheus-client-key = {
+      sopsFile = clientSecret;
+      key = "private-key";
+      owner = "prometheus";
+      group = "prometheus";
+      mode = "0440";
+    };
   };
 
   home-manager.users.deploy.virtualisation.quadlet.containers.grafana = {
