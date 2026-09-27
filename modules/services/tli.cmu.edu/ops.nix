@@ -1,7 +1,7 @@
 { config, inputs, lib, pkgs, ... }:
 
 let
-  adminPassword = "/srv/ops/grafana/admin-password";
+  adminPassword = "/var/lib/ops/grafana/admin-password";
   grafanaFiles = inputs.cmutli-dashboards + "/grafana";
   clientSecret = inputs."cmutli-fleet-secrets" + "/monitoring/client.yaml";
   caCertificate = ../../../certs/monitoring-ca.pem;
@@ -32,9 +32,9 @@ in
   }];
 
   systemd.tmpfiles.rules = [
-    "d /srv/ops 0750 deploy deploy -"
-    "d /srv/ops/grafana 0700 deploy deploy -"
-    "d /srv/ops/grafana/data 0700 deploy deploy -"
+    "d /var/lib/ops 0750 deploy deploy -"
+    "d /var/lib/ops/grafana 0700 deploy deploy -"
+    "d /var/lib/ops/grafana/data 0700 deploy deploy -"
   ];
 
   services.prometheus = {
@@ -97,7 +97,7 @@ in
       userns = "keep-id";
       user = "1000:1000";
       volumes = [
-        "/srv/ops/grafana/data:/var/lib/grafana"
+        "/var/lib/ops/grafana/data:/var/lib/grafana"
         "${adminPassword}:/run/secrets/grafana-admin-password:ro"
         "${grafanaFiles}/provisioning:/etc/grafana/provisioning:ro"
         "${grafanaFiles}/dashboards:/etc/grafana/dashboards:ro"
