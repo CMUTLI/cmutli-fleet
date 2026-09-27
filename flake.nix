@@ -45,6 +45,7 @@
         inherit system;
         specialArgs = { inherit inputs; };
         modules = [
+          ./modules/base.nix
           hostModule
           diskModule
           sops-nix.nixosModules.sops
@@ -62,9 +63,6 @@
       ];
     };
 
-    # Keyed by FQDN, not short hostname: short hostnames are not unique
-    # across domains in this fleet (for example a future www-01 could
-    # exist under core.cmu.edu, eberly.cmu.edu, and tli.cmu.edu at once).
     nixosConfigurations."ops-01.tli.cmu.edu" = mkHost
       ./hosts/ops-01.tli.cmu.edu/configuration.nix
       ./hosts/ops-01.tli.cmu.edu/disko.nix;
