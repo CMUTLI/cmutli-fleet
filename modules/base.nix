@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ./capabilities/crowdstrike.nix
+    ./capabilities/crowdstrike-falcon.nix
     ./capabilities/krb5.nix
     ./capabilities/secrets.nix
     ./users/base.nix

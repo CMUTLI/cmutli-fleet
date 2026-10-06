@@ -14,7 +14,7 @@
   networking.hostName = "syllabus-registry-01";
   networking.domain = "tli.cmu.edu";
 
-  cmutli.crowdstrike = {
+  cmutli.crowdstrike-falcon = {
     enable = true;
     tenant = "tli-servers";
   };

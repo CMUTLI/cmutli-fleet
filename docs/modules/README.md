@@ -32,7 +32,7 @@ every host.
   Adds Falcon sensor support using a tenant CID from fleet secrets. The sensor
   is disabled by default; select a tenant and enable it in the host
   configuration to enroll the host.\
-  `modules/capabilities/crowdstrike.nix`\
+  `modules/capabilities/crowdstrike-falcon.nix`\
   See [Set up Falcon](crowdstrike.md).
 
 * **Kerberos**\

@@ -14,7 +14,7 @@
   networking.hostName = "programs-01";
   networking.domain = "eberly.cmu.edu";
 
-  cmutli.crowdstrike = {
+  cmutli.crowdstrike-falcon = {
     enable = true;
     tenant = "tli-servers";
   };
