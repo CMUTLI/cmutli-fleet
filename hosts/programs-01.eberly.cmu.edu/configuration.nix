@@ -7,12 +7,17 @@
   ];
 
 
-  boot.loader.grub.enable = true;
+  boot.loader = {
+    grub.enable = true;
+  };
 
   networking.hostName = "programs-01";
   networking.domain = "eberly.cmu.edu";
 
-  cmutli.crowdstrike.tenant = "tli-servers";
+  cmutli.crowdstrike = {
+    enable = true;
+    tenant = "tli-servers";
+  };
 
   system.stateVersion = "26.05";
 }
