@@ -3,10 +3,6 @@
 let
   maintenancePage = pkgs.writeTextDir "not-available.html"
     (builtins.readFile ./syllabus-registry.tli.cmu.edu/not-available.html);
-  demoAuth = ''
-    auth_basic "Syllabus Registry demo";
-    auth_basic_user_file ${config.sops.secrets.demo-htpasswd.path};
-  '';
 in
 {
   imports = [
@@ -22,33 +18,27 @@ in
     "d /var/lib/syllabus-registry 0750 deploy deploy -"
   ];
 
-  sops.secrets.demo-htpasswd.owner = config.services.nginx.user;
+  # Application environment, read by the Compose services as their env_file.
+  sops.secrets.app-env = {
+    owner = "deploy";
+    group = "deploy";
+    mode = "0400";
+  };
 
   security.acme.certs."syllabus-registry.tli.cmu.edu".email = "certificates@tli.cmu.edu";
 
-  # Everyone gets the maintenance page with a 503. Visiting /demo sets a
-  # cookie that routes requests to the application, which still requires the
-  # demo password.
+  # When the application is not answering, visitors get the maintenance page.
   services.nginx.virtualHosts."syllabus-registry.tli.cmu.edu" = {
     forceSSL = true;
     enableACME = true;
     root = maintenancePage;
     extraConfig = ''
-      error_page 503 /not-available.html;
+      error_page 502 503 504 /not-available.html;
     '';
     locations."/" = {
       proxyPass = "http://127.0.0.1:3001";
       proxyWebsockets = true;
-      extraConfig = ''
-        if ($cookie_sr_demo != "1") {
-          return 503;
-        }
-      '' + demoAuth;
     };
-    locations."= /demo".extraConfig = ''
-      add_header Set-Cookie "sr_demo=1; Path=/; Secure; HttpOnly; SameSite=Lax" always;
-      return 302 /dev/login;
-    '';
     locations."= /not-available.html".extraConfig = ''
       internal;
     '';
