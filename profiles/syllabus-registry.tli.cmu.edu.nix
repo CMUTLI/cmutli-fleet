@@ -18,8 +18,14 @@ in
     "d /var/lib/syllabus-registry 0750 deploy deploy -"
   ];
 
-  # Application environment, read by the Compose services as their env_file.
+  # Application environment, read by the Compose services as their env_file,
+  # and the S3 Course API credentials the sync service adds to it.
   sops.secrets.app-env = {
+    owner = "deploy";
+    group = "deploy";
+    mode = "0400";
+  };
+  sops.secrets.s3-env = {
     owner = "deploy";
     group = "deploy";
     mode = "0400";
