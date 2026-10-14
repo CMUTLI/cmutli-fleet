@@ -19,11 +19,11 @@
     "cmutli-fleet-secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1791992576,
-        "narHash": "sha256-CmpqWrT2vbnQDvEwTRsbrt6Q8FX1UXaWiDqYbQWrIAg=",
+        "lastModified": 1791994892,
+        "narHash": "sha256-mKYTaTGFTZzyQZzxmjjiiIGimkQEJE3JsJbLjOSfn8U=",
         "ref": "refs/heads/main",
-        "rev": "3ac2842d7805a301ed520892b4977922b4a1af5c",
-        "revCount": 24,
+        "rev": "dc58cbab167ca73205a4b3e6166b5f6119b10f7a",
+        "revCount": 25,
         "type": "git",
         "url": "ssh://git@github.com/CMUTLI/cmutli-fleet-secrets.git"
       },
