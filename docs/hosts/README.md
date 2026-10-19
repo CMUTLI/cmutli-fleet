@@ -119,7 +119,8 @@ ssh "nixos@<host-fqdn>" # e.g., www-01.tli.cmu.edu
 
 ### On the installer (SSH)
 
-Record the host's hardware configuration, stable disk IDs, and firmware mode:
+Record the host's hardware configuration, stable disk IDs, and firmware mode.
+The command headings label each output for reference below:
 
 ```console
 printf '\n=== Hardware configuration ===\n'
@@ -137,7 +138,8 @@ repository while keeping this installer session open.
 
 #### Example: `www-01.tli.cmu.edu`
 
-The installer returned this hardware configuration:
+The `=== Hardware configuration ===` output is the installer's hardware
+configuration:
 
 ```console
 [nixos@nixos:~]$ nixos-generate-config --show-hardware-config
@@ -190,8 +192,8 @@ The installer returned this hardware configuration:
 > The `fileSystems` entries describe the live installer, not the installed
 > machine.
 
-The disk listing shows a 40 GiB OS disk, an additional 100 GiB disk for service
-data, and the installer CD-ROM:
+The `=== Block devices ===` output shows a 40 GiB OS disk, an additional 100
+GiB disk for service data, and the installer CD-ROM:
 
 ```console
 [nixos@nixos:~]$ lsblk -o NAME,SIZE,MODEL,SERIAL
@@ -206,7 +208,7 @@ sdb     100G Virtual disk                   6000c298bbf47fbcaa3cb57900ebe1be
 sr0     1.6G VMware Virtual IDE CDROM Drive 10000000000000000001
 ```
 
-The by-id listing gives both disks stable paths:
+The `=== Stable disk IDs ===` output gives both disks stable paths:
 
 ```console
 [nixos@nixos:~]$ ls -l /dev/disk/by-id
@@ -224,7 +226,7 @@ lrwxrwxrwx 1 root root 10 Sep 27 00:26 wwn-0x6000c298bbf47fbcaa3cb57900ebe1bd-pa
 lrwxrwxrwx 1 root root  9 Sep 27 00:26 wwn-0x6000c298bbf47fbcaa3cb57900ebe1be -> ../../sdb
 ```
 
-The firmware check reports BIOS for this VM:
+The `=== Firmware mode ===` output reports BIOS for this VM:
 
 ```console
 [nixos@nixos:~]$ [ -d /sys/firmware/efi ] && echo UEFI || echo BIOS
@@ -259,7 +261,8 @@ Create the hardware configuration file using the template below.
 Replace the module names and host platform with the values captured in the
 previous step.
 
-For a vSphere VM, also add VMware guest tools inside the module:
+For a vSphere VM, add the VMware guest-tools block inside the outer `{ ... }`
+in `hardware-configuration.nix`, as shown in the example below:
 
 ```nix
 virtualisation.vmware.guest = {
@@ -301,10 +304,6 @@ their IDs before installing.
 
 Create the disk layout file using the BIOS template below.
 
-> [!IMPORTANT]
-> Use stable `/dev/disk/by-id/` paths, not `/dev/sdX` names. Prefer the `wwn-`
-> path when available; it identifies the disk by its worldwide name.
-
 <samp>hosts/&lt;host-fqdn&gt;/disko.nix:</samp>
 
 ```nix
@@ -341,6 +340,10 @@ Create the disk layout file using the BIOS template below.
 
 Replace `<os-disk-id>` with the OS disk's identifier from the
 `ls -l /dev/disk/by-id` output.
+
+> [!IMPORTANT]
+> Use stable `/dev/disk/by-id/` paths, not `/dev/sdX` names. Prefer the `wwn-`
+> path when available; it identifies the disk by its worldwide name.
 
 If the firmware check during [Prepare to install](#prepare-to-install) reported
 `UEFI`, replace the entire `bios` entry with this `esp` entry:
@@ -573,6 +576,10 @@ Create the host configuration file using the template below.
 Replace `<host>` and `<domain>` with those picked from
 [Choose host and service names](#choose-host-and-service-names).
 
+If the firmware check during [Prepare to install](#prepare-to-install) reported
+`UEFI`, replace the entire `boot.loader` entry in the template with the
+configuration below.
+
 The UEFI bootloader configuration is:
 
 <samp>hosts/&lt;host-fqdn&gt;/configuration.nix:</samp>
@@ -583,9 +590,6 @@ The UEFI bootloader configuration is:
     efi.canTouchEfiVariables = true;
   };
 ```
-
-If the firmware check during [Prepare to install](#prepare-to-install) reported
-`UEFI`, replace the entire `boot.loader` entry in the template with this one.
 
 #### Example: `www-01.tli.cmu.edu`
 
@@ -692,8 +696,8 @@ sudo swapon "/dev/disk/by-id/<os-disk-id>-part2"
 sudo mount -o remount,size=4G /nix/.rw-store
 ```
 
-Replace `<os-disk-id>` in the first command with the OS disk's ID from
-`disko.nix`.
+Replace `<os-disk-id>` in the first command with the value used for
+`<os-disk-id>` in `disko.devices.disk.main.device`.
 
 ## Generate the host identity
 

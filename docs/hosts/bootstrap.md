@@ -581,14 +581,14 @@ Create `fleet.yaml` with SOPS, which opens an editor:
 
 ```console
 cd ../cmutli-fleet-secrets
-nix --extra-experimental-features "nix-command flakes" develop
-sops fleet.yaml
+nix --extra-experimental-features "nix-command flakes" develop -c sops fleet.yaml
 ```
 
 > [!TIP]
 > SOPS uses Vim by default. To choose another editor, run
-> `SOPS_EDITOR="<editor>" sops fleet.yaml` (e.g.,
-> `SOPS_EDITOR="nano" sops fleet.yaml`).
+> `SOPS_EDITOR="<editor>" nix --extra-experimental-features "nix-command flakes" develop -c sops fleet.yaml`
+> (e.g.,
+> `SOPS_EDITOR="nano" nix --extra-experimental-features "nix-command flakes" develop -c sops fleet.yaml`).
 
 Substitute `<root-password-verifier>` with the verifier printed earlier.
 
