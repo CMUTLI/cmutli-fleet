@@ -2,7 +2,7 @@
 
 {
   disko.devices.disk.main = {
-    device = "/dev/disk/by-id/scsi-36000c298bbf47fbcaa3cb57900ebe1bd";
+    device = "/dev/disk/by-id/wwn-0x6000c298bbf47fbcaa3cb57900ebe1bd";
     type = "disk";
     content = {
       type = "gpt";
