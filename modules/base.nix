@@ -8,7 +8,6 @@
     ./users/base.nix
   ];
 
-  # Administration tools available on every fleet host.
   environment.systemPackages = with pkgs; [
     age
     cowsay
@@ -25,7 +24,7 @@
 
   networking.firewall.enable = true;
 
-  # Disable default DHCP; the explicit systemd-networkd DHCP rules below remain active.
+  # The explicit systemd-networkd DHCP rules below remain active.
   networking.useDHCP = false;
 
   nix.gc = {
@@ -50,8 +49,6 @@
 
   systemd.coredump.settings.Coredump.Storage = "none";
 
-  # Match predictable and legacy Ethernet interface names so DHCP does not
-  # depend on the interface name assigned by the system.
   systemd.network = {
     enable = true;
     networks = {

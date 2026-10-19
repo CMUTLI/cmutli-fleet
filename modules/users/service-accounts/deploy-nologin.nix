@@ -10,6 +10,5 @@
     openssh.authorizedKeys.keys = [ ];
   };
 
-  # Administrators use deploy locally with sudo -iu deploy, never SSH.
   services.openssh.settings.DenyUsers = [ "deploy" ];
 }

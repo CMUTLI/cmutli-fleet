@@ -14,7 +14,7 @@
 
   # Quadlet units are declarative files in deploy's user systemd manager.
   # The NixOS module installs Podman's user generator; Home Manager owns the
-  # user-level Quadlet configuration when service modules add containers.
+  # user-level Quadlet configuration when service profiles add containers.
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = false;
