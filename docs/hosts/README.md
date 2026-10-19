@@ -2,8 +2,9 @@
 
 Use this guide to install a new fleet host.
 
-The first host in the fleet must be provisioned and installed using the [Fleet
-bootstrap](bootstrap.md) procedure.
+> [!IMPORTANT]
+> A running keys service is required for host enrollment. If this is the first
+> host and no keys service exists yet, follow [Bootstrap the fleet](bootstrap.md).
 
 ## Background
 
@@ -20,9 +21,6 @@ running and reused by hosts serving the same workload.
 A new host installation requires Nix, Git, SSH, and permission to clone and push
 `cmutli-fleet` and `cmutli-fleet-secrets`. Nix is available on Linux and macOS,
 and on Windows through WSL2. See [Install Nix](https://nix.dev/install-nix).
-
-A running keys service is required for host enrollment. If this is the first
-host and no keys service exists yet, follow [Bootstrap the fleet](bootstrap.md).
 
 ### From your computer
 
@@ -109,7 +107,7 @@ Set a password for the installer's `nixos` user:
 passwd
 ```
 
-The installer runs `sshd`, so you can continue from another machine.
+The installer runs `sshd`, so you can now continue from another machine.
 
 ### From your computer
 
@@ -124,9 +122,13 @@ ssh "nixos@<host-fqdn>" # e.g., www-01.tli.cmu.edu
 Record the host's hardware configuration, stable disk IDs, and firmware mode:
 
 ```console
+printf '\n=== Hardware configuration ===\n'
 nixos-generate-config --show-hardware-config
+printf '\n=== Block devices ===\n'
 lsblk -o NAME,SIZE,MODEL,SERIAL
+printf '\n=== Stable disk IDs ===\n'
 ls -l /dev/disk/by-id
+printf '\n=== Firmware mode ===\n'
 [ -d /sys/firmware/efi ] && echo UEFI || echo BIOS
 ```
 
@@ -297,8 +299,7 @@ Disko defines the partitions, filesystems, and mountpoints created during
 installation. Disko will erase the disks named in this file, so double-check
 their IDs before installing.
 
-Create the disk layout file using the template below. Replace `<os-disk-id>`
-with the OS disk's identifier from the `ls -l /dev/disk/by-id` output.
+Create the disk layout file using the BIOS template below.
 
 > [!IMPORTANT]
 > Use stable `/dev/disk/by-id/` paths, not `/dev/sdX` names. Prefer the `wwn-`
@@ -337,6 +338,9 @@ with the OS disk's identifier from the `ls -l /dev/disk/by-id` output.
   };
 }
 ```
+
+Replace `<os-disk-id>` with the OS disk's identifier from the
+`ls -l /dev/disk/by-id` output.
 
 If the firmware check during [Prepare to install](#prepare-to-install) reported
 `UEFI`, replace the entire `bios` entry with this `esp` entry:
@@ -377,8 +381,7 @@ mountpoint for each service by the kind of data it holds:
 
 **A disk used by only one service** can hold a single filesystem partition mounted
 at that service's path. Add `disko.devices.disk.data` after
-`disko.devices.disk.main` in the template above. Use the disk's by-id path and
-a mountpoint from the table.
+`disko.devices.disk.main` in the template above.
 
 <samp>hosts/&lt;host-fqdn&gt;/disko.nix:</samp>
 
@@ -400,11 +403,13 @@ a mountpoint from the table.
   };
 ```
 
+Replace `<data-disk-id>` with the disk's by-id path and `<mountpoint>` with the
+service path from the table.
+
 **When several services share a disk**, define an LVM volume group on its data
 partition and a logical volume for each service at its own mountpoint.
 Add `disko.devices.disk.data` and `disko.devices.lvm_vg.data` after
-`disko.devices.disk.main` in the template above. Use the disk's by-id path and
-set the service names, volume sizes, and mountpoints for the host.
+`disko.devices.disk.main` in the template above.
 
 <samp>hosts/&lt;host-fqdn&gt;/disko.nix:</samp>
 
@@ -446,6 +451,9 @@ set the service names, volume sizes, and mountpoints for the host.
     };
   };
 ```
+
+Replace `<data-disk-id>`, the service-name placeholders, `<size>`, and the
+mountpoint placeholders with the disk path and values for this host.
 
 #### Example: `www-01.tli.cmu.edu`
 
@@ -565,8 +573,7 @@ Create the host configuration file using the template below.
 Replace `<host>` and `<domain>` with those picked from
 [Choose host and service names](#choose-host-and-service-names).
 
-If the firmware check during [Prepare to install](#prepare-to-install) reported
-`UEFI`, replace the entire `boot.loader` entry with this one.
+The UEFI bootloader configuration is:
 
 <samp>hosts/&lt;host-fqdn&gt;/configuration.nix:</samp>
 
@@ -576,6 +583,9 @@ If the firmware check during [Prepare to install](#prepare-to-install) reported
     efi.canTouchEfiVariables = true;
   };
 ```
+
+If the firmware check during [Prepare to install](#prepare-to-install) reported
+`UEFI`, replace the entire `boot.loader` entry in the template with this one.
 
 #### Example: `www-01.tli.cmu.edu`
 
@@ -631,14 +641,16 @@ nixosConfigurations."www-01.tli.cmu.edu" = mkHost
 ### Stage and check the disk layout
 
 Nix evaluates only files that Git tracks. Stage the new host's files, then
-build its disk script without changing the disks:
+evaluate its disk layout without changing the disks:
 
 ```console
 host_fqdn="<host-fqdn>"
 git add flake.nix "hosts/$host_fqdn"
-nix --extra-experimental-features "nix-command flakes" build --no-link \
-  ".#nixosConfigurations.\"$host_fqdn\".config.system.build.diskoScript"
+nix --extra-experimental-features "nix-command flakes" eval --raw \
+  ".#nixosConfigurations.\"$host_fqdn\".config.system.build.diskoScript.drvPath"
 ```
+
+The command prints a `/nix/store/...-disko.drv` path when the layout is valid.
 
 ## Partition the host disks
 
@@ -655,15 +667,33 @@ recorded from the installer. This command erases every disk listed in
 host_fqdn="<host-fqdn>"
 nix --extra-experimental-features "nix-command flakes" run \
   github:nix-community/nixos-anywhere -- \
+  --build-on remote \
   --phases kexec,disko \
   --flake ".#$host_fqdn" "nixos@$host_fqdn"
 ```
 
 `nixos-anywhere` skips `kexec` when it detects the live NixOS installer.
+`--build-on remote` builds on the installer, so the install works from any
+computer, including a Mac.
 
 The filesystems are mounted at `/mnt`. If the installer reboots, repeat the
 command with `--disko-mode mount`; repartitioning would erase the host identity
 created in the next step.
+
+### On the installer (SSH)
+
+The live installer keeps its Nix store in memory, so a host with little RAM
+runs out of space while fetching tools or building the system. Turn on the
+new swap partition and enlarge the store so the remaining steps fit. Repeat
+these commands if the installer reboots.
+
+```console
+sudo swapon "/dev/disk/by-id/<os-disk-id>-part2"
+sudo mount -o remount,size=4G /nix/.rw-store
+```
+
+Replace `<os-disk-id>` in the first command with the OS disk's ID from
+`disko.nix`.
 
 ## Generate the host identity
 
@@ -697,12 +727,7 @@ on the first boot.
 ### From your computer
 
 In `cmutli-fleet-secrets`, add the host's recipient to the creation rule in
-`.sops.yaml` for `fleet.yaml`. Replace `<host-recipient>` with the public key
-from [Generate the host identity](#generate-the-host-identity). Keep all
-existing recipients.
-
-If reinstalling a host, replace its old recipient with the new one instead
-of adding a second recipient for that host.
+`.sops.yaml` for `fleet.yaml`.
 
 <samp>.sops.yaml:</samp>
 
@@ -711,6 +736,13 @@ creation_rules:
   - path_regex: ^fleet\.yaml$
     age: <existing-recipients>,<host-recipient>
 ```
+
+Replace `<host-recipient>` with the public key from
+[Generate the host identity](#generate-the-host-identity). Keep all existing
+recipients.
+
+If reinstalling a host, replace its old recipient with the new one instead
+of adding a second recipient for that host.
 
 The keys service, `keys.tli.cmu.edu`, will use its own host identity to rewrap
 `fleet.yaml`, adding the new host as a recipient.
@@ -781,6 +813,7 @@ Install NixOS onto the mounted disks and reboot into the installed system:
 host_fqdn="<host-fqdn>"
 nix --extra-experimental-features "nix-command flakes" run \
   github:nix-community/nixos-anywhere -- \
+  --build-on remote \
   --phases kexec,install,reboot \
   --flake ".#$host_fqdn" "nixos@$host_fqdn"
 ```
