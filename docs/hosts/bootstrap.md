@@ -19,7 +19,9 @@ later hosts.
 
 ## Prepare the repositories
 
-Clone the repositories as siblings under a working directory:
+Create the public `cmutli-fleet` and private `cmutli-fleet-secrets`
+repositories in the CMUTLI GitHub organization first. Clone them as siblings
+under a parent directory:
 
 ```console
 cd "<working-directory>"
@@ -30,7 +32,8 @@ git clone git@github.com:CMUTLI/cmutli-fleet-secrets.git
 Replace `<working-directory>` with the parent directory where you want the
 checkouts.
 
-The tree below shows the target layout for the two repositories:
+The tree below shows the final layout this guide creates in both repositories
+under the directory where you ran the clone commands:
 
 ```text
 <working-directory>/
@@ -394,6 +397,7 @@ access on every fleet host.
   users.users = {
     "<username1>" = {
       isNormalUser = true;
+      uid = 1001;
       extraGroups = [ "wheel" ];
       hashedPassword = "!";
       openssh.authorizedKeys.keys = [
@@ -403,6 +407,7 @@ access on every fleet host.
 
     "<username2>" = {
       isNormalUser = true;
+      uid = 1002;
       extraGroups = [ "wheel" ];
       hashedPassword = "!";
       openssh.authorizedKeys.keys = [
