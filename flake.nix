@@ -4,26 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
 
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    cmutli-fleet-secrets = {
-      url = "git+ssh://git@github.com/CMUTLI/cmutli-fleet-secrets.git";
-      flake = false;
-    };
-
-    cmutli-fleet-vendor = {
-      url = "git+ssh://git@github.com/CMUTLI/cmutli-fleet-vendor.git?lfs=1";
-      flake = false;
-    };
-
-    cmutli-dashboards = {
-      url = "github:CMUTLI/cmutli-dashboards";
-      flake = false;
-    };
-
+    # External NixOS modules.
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -35,37 +16,68 @@
     };
 
     quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
+
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Fleet-owned source repositories.
+    cmutli-dashboards = {
+      url = "github:CMUTLI/cmutli-dashboards";
+      flake = false;
+    };
+
+    cmutli-fleet-secrets = {
+      url = "git+ssh://git@github.com/CMUTLI/cmutli-fleet-secrets.git";
+      flake = false;
+    };
+
+    cmutli-fleet-vendor = {
+      url = "git+ssh://git@github.com/CMUTLI/cmutli-fleet-vendor.git?lfs=1";
+      flake = false;
+    };
   };
+
 
   outputs = inputs@{ nixpkgs, sops-nix, disko, home-manager, quadlet-nix, ... }:
     let
-      system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
+      forAllSystems = nixpkgs.lib.genAttrs [
+        "aarch64-darwin"
+        "aarch64-linux"
+        "x86_64-linux"
+      ];
+      hostSystem = "x86_64-linux";
       mkHost = hostModule: diskModule: nixpkgs.lib.nixosSystem {
-        inherit system;
+        system = hostSystem;
         specialArgs = { inherit inputs; };
         modules = [
           ./modules/base.nix
-          hostModule
           diskModule
-          sops-nix.nixosModules.sops
           disko.nixosModules.disko
           home-manager.nixosModules.home-manager
+          hostModule
           quadlet-nix.nixosModules.quadlet
+          sops-nix.nixosModules.sops
         ];
       };
     in {
-    devShells.${system}.default = pkgs.mkShell {
-      packages = with pkgs; [
-        age
-        git
-        sops
-      ];
-    };
+    devShells = forAllSystems (system:
+      let
+        pkgs = nixpkgs.legacyPackages.${system};
+      in {
+        default = pkgs.mkShell {
+          packages = with pkgs; [
+            age
+            git
+            sops
+          ];
+        };
+      });
 
-    # Keyed by FQDN, not short hostname: short hostnames are not unique
-    # across domains in this fleet (for example a future www-01 could
-    # exist under core.cmu.edu, eberly.cmu.edu, and tli.cmu.edu at once).
+    # #### Fleet hosts ####
+    # Add new entries below in alphabetical order.
+
     nixosConfigurations."keys-01.tli.cmu.edu" = mkHost
       ./hosts/keys-01.tli.cmu.edu/configuration.nix
       ./hosts/keys-01.tli.cmu.edu/disko.nix;
