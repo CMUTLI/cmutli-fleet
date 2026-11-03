@@ -39,8 +39,15 @@
     };
   };
 
-
-  outputs = inputs@{ nixpkgs, sops-nix, disko, home-manager, quadlet-nix, ... }:
+  outputs =
+    inputs@{
+      nixpkgs,
+      sops-nix,
+      disko,
+      home-manager,
+      quadlet-nix,
+      ...
+    }:
     let
       forAllSystems = nixpkgs.lib.genAttrs [
         "aarch64-darwin"
@@ -48,50 +55,55 @@
         "x86_64-linux"
       ];
       hostSystem = "x86_64-linux";
-      mkHost = hostModule: diskModule: nixpkgs.lib.nixosSystem {
-        system = hostSystem;
-        specialArgs = { inherit inputs; };
-        modules = [
-          ./modules/base.nix
-          diskModule
-          disko.nixosModules.disko
-          home-manager.nixosModules.home-manager
-          hostModule
-          quadlet-nix.nixosModules.quadlet
-          sops-nix.nixosModules.sops
-        ];
-      };
-    in {
-    devShells = forAllSystems (system:
-      let
-        pkgs = nixpkgs.legacyPackages.${system};
-      in {
-        default = pkgs.mkShell {
-          packages = with pkgs; [
-            age
-            git
-            sops
+      mkHost =
+        hostModule: diskModule:
+        nixpkgs.lib.nixosSystem {
+          system = hostSystem;
+          specialArgs = { inherit inputs; };
+          modules = [
+            ./modules/base.nix
+            diskModule
+            disko.nixosModules.disko
+            home-manager.nixosModules.home-manager
+            hostModule
+            quadlet-nix.nixosModules.quadlet
+            sops-nix.nixosModules.sops
           ];
         };
-      });
+    in
+    {
+      devShells = forAllSystems (
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in
+        {
+          default = pkgs.mkShell {
+            packages = with pkgs; [
+              age
+              git
+              sops
+            ];
+          };
+        }
+      );
 
-    # #### Fleet hosts ####
-    # Add new entries below in alphabetical order.
+      # #### Fleet hosts ####
+      # Add new entries below in alphabetical order.
 
-    nixosConfigurations."keys-01.tli.cmu.edu" = mkHost
-      ./hosts/keys-01.tli.cmu.edu/configuration.nix
-      ./hosts/keys-01.tli.cmu.edu/disko.nix;
+      nixosConfigurations."keys-01.tli.cmu.edu" =
+        mkHost ./hosts/keys-01.tli.cmu.edu/configuration.nix ./hosts/keys-01.tli.cmu.edu/disko.nix;
 
-    nixosConfigurations."ops-01.tli.cmu.edu" = mkHost
-      ./hosts/ops-01.tli.cmu.edu/configuration.nix
-      ./hosts/ops-01.tli.cmu.edu/disko.nix;
+      nixosConfigurations."ops-01.tli.cmu.edu" =
+        mkHost ./hosts/ops-01.tli.cmu.edu/configuration.nix ./hosts/ops-01.tli.cmu.edu/disko.nix;
 
-    nixosConfigurations."programs-01.eberly.cmu.edu" = mkHost
-      ./hosts/programs-01.eberly.cmu.edu/configuration.nix
-      ./hosts/programs-01.eberly.cmu.edu/disko.nix;
+      nixosConfigurations."programs-01.eberly.cmu.edu" =
+        mkHost ./hosts/programs-01.eberly.cmu.edu/configuration.nix ./hosts/programs-01.eberly.cmu.edu/disko.nix;
 
-    nixosConfigurations."syllabus-registry-01.tli.cmu.edu" = mkHost
-      ./hosts/syllabus-registry-01.tli.cmu.edu/configuration.nix
-      ./hosts/syllabus-registry-01.tli.cmu.edu/disko.nix;
-  };
+      nixosConfigurations."syllabus-registry-01.tli.cmu.edu" =
+        mkHost ./hosts/syllabus-registry-01.tli.cmu.edu/configuration.nix ./hosts/syllabus-registry-01.tli.cmu.edu/disko.nix;
+
+      nixosConfigurations."www-01.tli.cmu.edu" =
+        mkHost ./hosts/www-01.tli.cmu.edu/configuration.nix ./hosts/www-01.tli.cmu.edu/disko.nix;
+    };
 }
