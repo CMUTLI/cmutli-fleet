@@ -3,6 +3,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ../../profiles/placemellon.andrew.cmu.edu.nix
   ];
 
   boot.loader = {
