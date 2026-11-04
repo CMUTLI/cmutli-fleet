@@ -25,8 +25,10 @@
 
   security.acme.certs."placemellon.andrew.cmu.edu".email = "certificates@tli.cmu.edu";
 
+  # Serves image URLs over HTTP as well as HTTPS, without a redirect, so
+  # existing http:// links keep working.
   services.nginx.virtualHosts."placemellon.andrew.cmu.edu" = {
-    forceSSL = true;
+    addSSL = true;
     enableACME = true;
     locations."/".proxyPass = "http://127.0.0.1:3000";
   };

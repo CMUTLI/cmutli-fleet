@@ -29,7 +29,8 @@ The service has no secrets.
 ## Routing
 
 Nginx terminates TLS for `placemellon.andrew.cmu.edu`, with a certificate from
-ACME, and proxies to the container.
+ACME, and proxies to the container. It serves both HTTP and HTTPS without a
+redirect, so `http://` links keep working.
 
 ## Operations
 
