@@ -13,7 +13,7 @@
       RestartSec = "10s";
     };
     containerConfig = {
-      image = "ghcr.io/cmu-web/cmu-web-placemellon@sha256:b805c4edff58b8af137ab6262892419a67c9915cce46eed6fd443d17656f7c50";
+      image = "ghcr.io/cmu-web/cmu-web-placemellon@sha256:506ea18e548e785e6ba80c5e96db1f3616aeb43f2fa1b0becd0a3bbd2f7bde70";
       publishPorts = [ "127.0.0.1:3000:3000" ];
       # Podman ignores the image's HEALTHCHECK in OCI-format images.
       healthCmd = "node -e \"fetch('http://localhost:3000/healthz').then(r=>process.exit(r.ok?0:1),()=>process.exit(1))\"";
