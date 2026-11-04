@@ -4,6 +4,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../profiles/placemellon.andrew.cmu.edu.nix
+    ../../profiles/webkit.andrew.cmu.edu.nix
   ];
 
   boot.loader = {
