@@ -23,6 +23,11 @@
     };
 
     # Fleet-owned source repositories.
+    cmu-web-kit = {
+      url = "github:cmu-web/cmu-web-kit";
+      flake = false;
+    };
+
     cmutli-dashboards = {
       url = "github:CMUTLI/cmutli-dashboards";
       flake = false;

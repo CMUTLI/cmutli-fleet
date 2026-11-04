@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "cmu-web-kit": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793820109,
+        "narHash": "sha256-ZtHgwv51oeoV5VJ05ZFcrGoQZN4m7uS4z+ShDTQDwgo=",
+        "owner": "cmu-web",
+        "repo": "cmu-web-kit",
+        "rev": "e66018d3e31ea6879a4e930fcd9da60ee41f005a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cmu-web",
+        "repo": "cmu-web-kit",
+        "type": "github"
+      }
+    },
     "cmutli-dashboards": {
       "flake": false,
       "locked": {
@@ -124,6 +140,7 @@
     },
     "root": {
       "inputs": {
+        "cmu-web-kit": "cmu-web-kit",
         "cmutli-dashboards": "cmutli-dashboards",
         "cmutli-fleet-secrets": "cmutli-fleet-secrets",
         "cmutli-fleet-vendor": "cmutli-fleet-vendor",
