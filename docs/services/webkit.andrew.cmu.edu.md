@@ -15,8 +15,8 @@ own. The service configuration is shared through
 ## Runtime
 
 Nginx serves the repository's files from the Nix store. The `cmu-web-kit` flake
-input pins the revision, so `main` changes reach this service only when the
-input is updated. There is no container.
+input pins a release tag, so changes reach this service only when the tag in
+`flake.nix` changes. There is no container.
 
 ## Storage
 
@@ -34,7 +34,8 @@ The repository's `index.html` sends visitors from `/` to `/docs/`.
 
 ## Operations
 
-To publish a newer revision, update the input, then
+To publish a newer release, change the tag in the `cmu-web-kit` input in
+`flake.nix`, update the input, then
 [apply the configuration](../../README.md#apply-configuration):
 
 ```console
