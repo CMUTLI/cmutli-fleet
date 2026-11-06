@@ -1,6 +1,6 @@
 # webkilt.andrew.cmu.edu
 
-This document describes the production endpoint for the Carnegie Mellon Web Kit
+This document describes the production endpoint for the Carnegie Mellon Web Kilt
 documentation as configured by `cmutli-fleet`. The
 [application repository](https://github.com/cmu-web/cmu-web-kilt) covers
 development, releases, and the kit's other distribution channels.
@@ -35,7 +35,8 @@ work. It terminates TLS on 443 with a certificate from ACME.
 `webkit.andrew.cmu.edu`, the site's original name, stays as a permanent
 redirect: Nginx answers it on both ports with a 301 to the same scheme and
 path on `webkilt.andrew.cmu.edu`. Each name has its own ACME certificate.
-The repository's `index.html` sends visitors from `/` to `/docs/`.
+The kit's documentation is at the site's root, with its CSS and JavaScript
+beside it, as the kit's GitHub Pages workflow lays them out.
 
 ## Operations
 
