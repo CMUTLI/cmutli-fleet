@@ -33,7 +33,7 @@ Nginx serves `webkilt.andrew.cmu.edu` on port 80 as well as 443, without
 redirecting HTTP to HTTPS, so old clients that cannot use current TLS still
 work. It terminates TLS on 443 with a certificate from ACME.
 `webkit.andrew.cmu.edu`, the site's original name, stays as a permanent
-redirect: Nginx answers it on both ports with a 301 to the same scheme and
+redirect: Nginx answers it on both ports with a 308 to the same scheme and
 path on `webkilt.andrew.cmu.edu`. Each name has its own ACME certificate.
 The kit's documentation is at the site's root, with its CSS and JavaScript
 beside it, as the kit's GitHub Pages workflow lays them out.

@@ -33,6 +33,6 @@ in
   services.nginx.virtualHosts."webkit.andrew.cmu.edu" = {
     addSSL = true;
     enableACME = true;
-    locations."/".return = "301 $scheme://webkilt.andrew.cmu.edu$request_uri";
+    locations."/".return = "308 $scheme://webkilt.andrew.cmu.edu$request_uri";
   };
 }
