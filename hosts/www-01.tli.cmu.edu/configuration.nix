@@ -4,6 +4,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../profiles/placemellon.andrew.cmu.edu.nix
+    ../../profiles/qrnegie.andrew.cmu.edu.nix
     ../../profiles/webkilt.andrew.cmu.edu.nix
   ];
 
