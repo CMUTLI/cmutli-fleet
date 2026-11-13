@@ -28,8 +28,11 @@ The builder's map runs in the visitor's browser, not on the server. It loads
 Leaflet (BSD-2) from cdnjs the first time someone opens the map, and the
 browser fetches OpenStreetMap tiles from `tile.openstreetmap.org`, credited on
 the map. Address suggestions come from Photon (`photon.komoot.io`), which
-searches OpenStreetMap data. None of it passes through QRnegie's server, and
-Nginx adds no Content-Security-Policy that would block these hosts.
+searches OpenStreetMap data. Every page also loads the CMU Web Google
+Analytics tag from `www.googletagmanager.com`; images and `/mcp` aren't
+counted, so the Nginx logs remain the record of those. None of it passes
+through QRnegie's server, and Nginx adds no Content-Security-Policy that would
+block these hosts.
 
 ## Storage
 
