@@ -7,8 +7,9 @@ covers development, releases, and [running the image](https://github.com/cmu-web
 ## Background
 
 QRnegie draws QR codes in Carnegie Mellon styles, as SVG or PNG. It serves
-its documentation and builder at `/`, images at `/qr.svg` and `/qr.png`, and
-an MCP server at `/mcp`. The service configuration is shared through
+its documentation and builder at `/`, images at `/qr.svg` and `/qr.png`, the
+list of icon names the builder offers at `/icons.json`, and an MCP server at
+`/mcp`. The service configuration is shared through
 `profiles/qrnegie.andrew.cmu.edu.nix` and applied to `www-01.tli.cmu.edu`.
 `qrnegie.andrew.cmu.edu` is a CNAME to that host.
 
@@ -17,8 +18,18 @@ an MCP server at `/mcp`. The service configuration is shared through
 A rootless Podman container runs as `deploy`, listening on `127.0.0.1:3002`.
 The image is pinned by digest in the profile's `image`. While `image` is null,
 the container and the site are left out. The app needs no outbound
-connections. Its `PUBLIC_URL` defaults to `https://qrnegie.andrew.cmu.edu`,
-the origin the MCP server's image addresses use, so the profile doesn't set it.
+connections: the icons a code can carry are Bootstrap Icons SVG files inside
+the image (`bootstrap-icons`, MIT), each read the first time a code uses it
+and then kept in memory. Its `PUBLIC_URL` defaults to
+`https://qrnegie.andrew.cmu.edu`, the origin the MCP server's image addresses
+use, so the profile doesn't set it.
+
+The builder's map runs in the visitor's browser, not on the server. It loads
+Leaflet (BSD-2) from cdnjs the first time someone opens the map, and the
+browser fetches OpenStreetMap tiles from `tile.openstreetmap.org`, credited on
+the map. Address suggestions come from Photon (`photon.komoot.io`), which
+searches OpenStreetMap data. None of it passes through QRnegie's server, and
+Nginx adds no Content-Security-Policy that would block these hosts.
 
 ## Storage
 
@@ -38,7 +49,7 @@ Each image is drawn on request, so Nginx limits `/qr.svg` and `/qr.png` to
 five requests a second per client address, with a burst of 20 served without
 delay. Requests beyond that get a 429. The builder redraws at most twice a
 second, so ordinary use stays well under the limit. The documentation, the
-builder, and `/mcp` are not limited.
+builder, `/icons.json`, and `/mcp` are not limited.
 
 ## Operations
 
