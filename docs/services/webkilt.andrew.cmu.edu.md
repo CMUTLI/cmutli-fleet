@@ -28,7 +28,16 @@ The MCP server is a rootless Podman container running as `deploy`, listening
 on `127.0.0.1:3001`. Its image is pinned by digest in the profile's
 `mcpImage`. While `mcpImage` is null, the container and the `/mcp` route are
 left out. The server reads each kit release from jsDelivr, so it needs
-outbound HTTPS, and a new kit release reaches it without a deploy.
+outbound HTTPS, and a new kit release reaches it without a deploy. It links
+each release to its line's docs on this site, which is its default
+`DOCS_URL`.
+
+The server's `generate_social_card` tool makes link preview images: it
+captures a public page with Chromium, or takes an uploaded screenshot, and
+returns the image without storing it. Its captures come from
+`www-01.tli.cmu.edu`, on the campus network, so a page limited to campus
+addresses rather than a sign-in can be captured, as with
+[FencePost](fencepost.andrew.cmu.edu.md#runtime).
 
 ## Storage
 
@@ -65,7 +74,8 @@ that the name doesn't match.
 
 `https://webkilt.andrew.cmu.edu/mcp` proxies to the MCP server. The server
 answers each request with plain JSON; the proxy is unbuffered so it could
-stream later. Unlike the site, `/mcp` is HTTPS only: an HTTP request gets a 308
+stream later. It accepts request bodies of up to 12 MB, for uploaded
+screenshots. Unlike the site, `/mcp` is HTTPS only: an HTTP request gets a 308
 to HTTPS, which keeps its POST.
 
 ## Operations

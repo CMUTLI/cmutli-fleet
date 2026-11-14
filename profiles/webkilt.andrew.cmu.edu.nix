@@ -28,8 +28,8 @@ let
   );
   # The kit's MCP server (cmu-web/cmu-web-kilt-mcp), pinned by digest. Null
   # leaves the container and /mcp out.
-  # 0.2.0
-  mcpImage = "ghcr.io/cmu-web/cmu-web-kilt-mcp@sha256:e623512a7b01edd8a8c5454041dda3f5571a77a368b5f88b36c21e707901445b";
+  # 0.3.0
+  mcpImage = "ghcr.io/cmu-web/cmu-web-kilt-mcp@sha256:f15152d01fc2930fec88b27b6f2ab5e76d8ffecd09f03c431c8b707903de5df5";
 in
 {
   imports = [
@@ -82,6 +82,7 @@ in
       # The MCP endpoint is HTTPS only: its clients are current, unlike the
       # site's. A 308 keeps a client's POST. The server answers with plain
       # JSON today; no buffering and a long timeout let it stream later.
+      # generate_social_card takes uploaded screenshots of up to 12 MB.
       "= /mcp" = lib.mkIf (mcpImage != null) {
         proxyPass = "http://127.0.0.1:3001";
         extraConfig = ''
@@ -90,6 +91,7 @@ in
           }
           proxy_buffering off;
           proxy_read_timeout 1h;
+          client_max_body_size 12m;
         '';
       };
     };
