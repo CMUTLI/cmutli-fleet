@@ -54,6 +54,10 @@ in
   services.nginx.virtualHosts."webkilt.andrew.cmu.edu" = {
     addSSL = true;
     enableACME = true;
+    # The catch-all: a name pointed at this host that no site claims, such as
+    # a service not released yet, gets the kit's docs instead of whichever
+    # site nginx would otherwise pick first.
+    default = true;
     root = site;
     # The MCP endpoint is HTTPS only: its clients are current, unlike the
     # site's. A 308 keeps a client's POST. The server answers with plain JSON

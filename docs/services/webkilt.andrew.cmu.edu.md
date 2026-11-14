@@ -48,6 +48,11 @@ path on `webkilt.andrew.cmu.edu`. Each name has its own ACME certificate.
 The kit's documentation is at the site's root, with its CSS and JavaScript
 beside it, as the kit's GitHub Pages workflow lays them out.
 
+This site is Nginx's default on the host: a request for a name that no site
+claims, such as a CNAME for a service not released yet, gets the kit's docs.
+Over HTTPS that request still sees this site's certificate, so browsers warn
+that the name doesn't match.
+
 `https://webkilt.andrew.cmu.edu/mcp` proxies to the MCP server. The server
 answers each request with plain JSON; the proxy is unbuffered so it could
 stream later. Unlike the site, `/mcp` is HTTPS only: an HTTP request gets a 308

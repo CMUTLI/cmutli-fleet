@@ -35,7 +35,7 @@ The service has no secrets.
 ## Routing
 
 Nginx terminates TLS for `jekyllandplaid.andrew.cmu.edu`, with a certificate
-from ACME. HTTP requests redirect to HTTPS.
+from ACME. HTTP requests get a 308 to HTTPS.
 
 ## Operations
 
