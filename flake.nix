@@ -31,7 +31,7 @@
     # Jekyll & Plaid's docs site, built by the repository's release workflow
     # (a Jekyll build with the github-pages gem, as GitHub Pages does).
     jekyll-and-plaid-site = {
-      url = "https://github.com/cmu-web/cmu-web-jekyll-and-plaid/releases/download/0.2.0/site.tar.gz";
+      url = "https://github.com/cmu-web/cmu-web-jekyll-and-plaid/releases/download/0.2.1/site.tar.gz";
       flake = false;
     };
 
