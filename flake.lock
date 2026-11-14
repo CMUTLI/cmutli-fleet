@@ -108,6 +108,19 @@
         "type": "github"
       }
     },
+    "jekyll-and-plaid-site": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1794617673,
+        "narHash": "sha256-kMa83kclXXHjzLlRZar4RteK2sc38DWarGn1//8IJUI=",
+        "type": "tarball",
+        "url": "https://github.com/cmu-web/cmu-web-jekyll-and-plaid/releases/download/0.1.0/site.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://github.com/cmu-web/cmu-web-jekyll-and-plaid/releases/download/0.1.0/site.tar.gz"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1789459628,
@@ -147,6 +160,7 @@
         "cmutli-fleet-vendor": "cmutli-fleet-vendor",
         "disko": "disko",
         "home-manager": "home-manager",
+        "jekyll-and-plaid-site": "jekyll-and-plaid-site",
         "nixpkgs": "nixpkgs",
         "quadlet-nix": "quadlet-nix",
         "sops-nix": "sops-nix"
