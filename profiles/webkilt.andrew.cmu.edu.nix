@@ -82,7 +82,6 @@ in
       # The MCP endpoint is HTTPS only: its clients are current, unlike the
       # site's. A 308 keeps a client's POST. The server answers with plain
       # JSON today; no buffering and a long timeout let it stream later.
-      # generate_social_card takes uploaded screenshots of up to 12 MB.
       "= /mcp" = lib.mkIf (mcpImage != null) {
         proxyPass = "http://127.0.0.1:3001";
         extraConfig = ''
@@ -91,7 +90,6 @@ in
           }
           proxy_buffering off;
           proxy_read_timeout 1h;
-          client_max_body_size 12m;
         '';
       };
     };

@@ -32,13 +32,6 @@ outbound HTTPS, and a new kit release reaches it without a deploy. It links
 each release to its line's docs on this site, which is its default
 `DOCS_URL`.
 
-The server's `generate_social_card` tool makes link preview images: it
-captures a public page with Chromium, or takes an uploaded screenshot, and
-returns the image without storing it. Its captures come from
-`www-01.tli.cmu.edu`, on the campus network, so a page limited to campus
-addresses rather than a sign-in can be captured, as with
-[FencePost](fencepost.andrew.cmu.edu.md#runtime).
-
 ## Storage
 
 The service has no persistent data. The site's files are part of the host's
@@ -74,8 +67,7 @@ that the name doesn't match.
 
 `https://webkilt.andrew.cmu.edu/mcp` proxies to the MCP server. The server
 answers each request with plain JSON; the proxy is unbuffered so it could
-stream later. It accepts request bodies of up to 12 MB, for uploaded
-screenshots. Unlike the site, `/mcp` is HTTPS only: an HTTP request gets a 308
+stream later. Unlike the site, `/mcp` is HTTPS only: an HTTP request gets a 308
 to HTTPS, which keeps its POST.
 
 ## Operations
