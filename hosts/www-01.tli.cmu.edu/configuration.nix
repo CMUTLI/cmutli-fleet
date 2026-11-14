@@ -3,6 +3,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ../../profiles/fencepost.andrew.cmu.edu.nix
     ../../profiles/jekyllandplaid.andrew.cmu.edu.nix
     ../../profiles/placemellon.andrew.cmu.edu.nix
     ../../profiles/qrnegie.andrew.cmu.edu.nix
