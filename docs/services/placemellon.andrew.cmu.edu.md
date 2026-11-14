@@ -16,7 +16,13 @@ The service configuration is shared through
 A rootless Podman container runs as `deploy`, listening on `127.0.0.1:3000`.
 The image is pinned by digest in the profile. It needs outbound HTTPS to CMU
 Selects and its image CDN. After a restart, it reloads its catalog, and photo
-requests return 503 until the catalog is ready.
+requests return 503 until the catalog is ready. It keeps recent images in
+memory, up to `CACHE_ENTRIES` images (256) and `CACHE_MB` megabytes (64); the
+profile keeps those defaults.
+
+Every page loads the CMU Web Google Analytics tag from
+`www.googletagmanager.com`, in the visitor's browser; image requests aren't
+counted, so the Nginx logs remain the record of those.
 
 ## Storage
 
