@@ -18,9 +18,11 @@ applied to `www-01.tli.cmu.edu`.
 
 ## Runtime
 
-Nginx serves the repository's files from the Nix store. The `cmu-web-kilt` flake
-input pins a release tag, so changes reach this service only when the tag in
-`flake.nix` changes.
+Nginx serves the repository's files from the Nix store. The kit has one
+release line per CMU template, each with its own docs: line 0 is the current
+template. The profile's `lines` maps each line's number to a flake input, and
+`cmu-web-kilt` is line 0's. Each input pins a release tag, so changes reach
+this service only when a tag in `flake.nix` changes.
 
 The MCP server is a rootless Podman container running as `deploy`, listening
 on `127.0.0.1:3001`. Its image is pinned by digest in the profile's
@@ -45,8 +47,16 @@ work. It terminates TLS on 443 with a certificate from ACME.
 `webkit.andrew.cmu.edu`, the site's original name, stays as a permanent
 redirect: Nginx answers it on both ports with a 308 to the same scheme and
 path on `webkilt.andrew.cmu.edu`. Each name has its own ACME certificate.
-The kit's documentation is at the site's root, with its CSS and JavaScript
-beside it, as the kit's GitHub Pages workflow lays them out.
+Each line's documentation is at its number, such as `/0/`, with that line's
+CSS and JavaScript beside it, as the kit's GitHub Pages workflow lays them
+out. There's no switcher between lines. The site's root gets a 307 to the
+line that the profile's `rootLine` names. The redirect is temporary so that
+browsers and search engines follow `rootLine` when it changes. Pages don't
+carry over between lines, so nothing else redirects: any other path outside a
+line, such as a link from before the lines like `/forms.html`, is a 404. Two
+paths stay at the root: `/mcp`, and `/images/cmu-web-preview.webp`, the
+image the other CMU Web sites show on the kit's card, which is the root
+line's copy.
 
 This site is Nginx's default on the host: a request for a name that no site
 claims, such as a CNAME for a service not released yet, gets the kit's docs.
@@ -60,13 +70,16 @@ to HTTPS, which keeps its POST.
 
 ## Operations
 
-To publish a newer release, change the tag in the `cmu-web-kilt` input in
+To publish a newer release, change the tag in that line's input in
 `flake.nix`, update the input, then
 [apply the configuration](../../README.md#apply-configuration):
 
 ```console
 nix --extra-experimental-features "nix-command flakes" flake update cmu-web-kilt
 ```
+
+To add a line, add a flake input pinned to the line's first release tag and
+add it to `lines` in the profile. To send the root to it, set `rootLine`.
 
 To release a new version of the MCP server, set `mcpImage` in the profile to
 the new image digest, then apply the configuration. Check its health and logs

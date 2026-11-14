@@ -6,15 +6,26 @@
 }:
 
 let
-  kit = inputs.cmu-web-kilt;
-  # The kit's docs at the site's root, with its own css/ and js/ beside the
-  # docs' own, as the kit's GitHub Pages workflow lays them out
-  site = pkgs.runCommand "webkilt-andrew-cmu-edu" { } ''
-    cp -r ${kit}/docs $out
-    chmod -R u+w $out
-    cp ${kit}/css/*.css $out/css/
-    cp ${kit}/js/*.js $out/js/
-  '';
+  # Each template line's docs, served under its own number: line 0 is the
+  # current CMU template. Add a line's flake input here when it ships.
+  lines = {
+    "0" = inputs.cmu-web-kilt;
+  };
+  # The line that the site's root redirects to.
+  rootLine = "0";
+  # Each line's docs in its own directory, with the kit's own css/ and js/
+  # beside the docs' own, as the kit's GitHub Pages workflow lays them out
+  site = pkgs.runCommand "webkilt-andrew-cmu-edu" { } (
+    lib.concatStrings (
+      lib.mapAttrsToList (line: kit: ''
+        mkdir -p $out
+        cp -r ${kit}/docs $out/${line}
+        chmod -R u+w $out/${line}
+        cp ${kit}/css/*.css $out/${line}/css/
+        cp ${kit}/js/*.js $out/${line}/js/
+      '') lines
+    )
+  );
   # The kit's MCP server (cmu-web/cmu-web-kilt-mcp), pinned by digest. Null
   # leaves the container and /mcp out.
   # 0.2.0
@@ -59,18 +70,28 @@ in
     # site nginx would otherwise pick first.
     default = true;
     root = site;
-    # The MCP endpoint is HTTPS only: its clients are current, unlike the
-    # site's. A 308 keeps a client's POST. The server answers with plain JSON
-    # today; no buffering and a long timeout let it stream later.
-    locations."= /mcp" = lib.mkIf (mcpImage != null) {
-      proxyPass = "http://127.0.0.1:3001";
-      extraConfig = ''
-        if ($scheme = http) {
-          return 308 https://$host$request_uri;
-        }
-        proxy_buffering off;
-        proxy_read_timeout 1h;
-      '';
+    # Pages don't carry over between lines, so only the root redirects; any
+    # other path outside a line is a 404, except the card image and /mcp. The
+    # redirect is temporary, so browsers and search engines follow rootLine
+    # when it changes.
+    locations = {
+      "= /".return = "307 /${rootLine}/";
+      # The other CMU Web sites show this image on the kit's card, so it
+      # stays at the root, as the root line's copy.
+      "= /images/cmu-web-preview.webp".alias = "${site}/${rootLine}/images/cmu-web-preview.webp";
+      # The MCP endpoint is HTTPS only: its clients are current, unlike the
+      # site's. A 308 keeps a client's POST. The server answers with plain
+      # JSON today; no buffering and a long timeout let it stream later.
+      "= /mcp" = lib.mkIf (mcpImage != null) {
+        proxyPass = "http://127.0.0.1:3001";
+        extraConfig = ''
+          if ($scheme = http) {
+            return 308 https://$host$request_uri;
+          }
+          proxy_buffering off;
+          proxy_read_timeout 1h;
+        '';
+      };
     };
   };
 
