@@ -29,7 +29,7 @@ let
   # The kit's MCP server (cmu-web/cmu-web-kilt-mcp), pinned by digest. Null
   # leaves the container and /mcp out.
   # 0.3.1
-  mcpImage = "ghcr.io/cmu-web/cmu-web-kilt-mcp@sha256:8734c57202f3565411ef98200890a313374d04dd159bc34e58df5bf87be832e2";
+  mcpImage = "ghcr.io/cmu-web/cmu-web-kilt-mcp@sha256:73193782296afbf23e76bc64e5e57aa8a3d989120fbfb5d92a7abc8f2b21ce31";
 in
 {
   imports = [
