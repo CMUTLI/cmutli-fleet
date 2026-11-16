@@ -24,14 +24,14 @@
 
     # Fleet-owned source repositories.
     cmu-web-kilt = {
-      url = "github:cmu-web/cmu-web-kilt/0.6.9";
+      url = "github:cmu-web/cmu-web-kilt/0.7.0";
       flake = false;
     };
 
     # Jekyll & Plaid's docs site, built by the repository's release workflow
     # (a Jekyll build with the github-pages gem, as GitHub Pages does).
     jekyll-and-plaid-site = {
-      url = "https://github.com/cmu-web/cmu-web-jekyll-and-plaid/releases/download/0.2.4/site.tar.gz";
+      url = "https://github.com/cmu-web/cmu-web-jekyll-and-plaid/releases/download/0.2.5/site.tar.gz";
       flake = false;
     };
 
