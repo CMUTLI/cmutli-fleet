@@ -4,7 +4,7 @@ let
   # The app (cmu-web/cmu-web-qrnegie), pinned by digest. Null leaves the
   # container and the site out.
   # 0.3.7
-  image = "ghcr.io/cmu-web/cmu-web-qrnegie@sha256:09067ed1f397436d09c04b3678b0a9f7f10e7003fcd6020a8a9fcb413afac82e";
+  image = "ghcr.io/cmu-web/cmu-web-qrnegie@sha256:16097b6be4b5757366bb626748d84fe57542647a2ac78c7fd4d2dab3b9dcc5ce";
 
   httpsOnly = ''
     if ($scheme = http) {
