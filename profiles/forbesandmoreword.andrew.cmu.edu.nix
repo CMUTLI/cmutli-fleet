@@ -4,8 +4,8 @@ let
   # The docs site (cmu-web/cmu-web-forbes-and-moreword), pinned by digest: one
   # image holds WordPress, the theme and the site built from the repository's
   # site/ into SQLite. Null leaves the container and the site out.
-  # 0.1.1
-  image = "ghcr.io/cmu-web/cmu-web-forbes-and-moreword@sha256:62b094a768e54b6244bb9ea0d85e4744c5dac106b48af6c8de9c5d2f2623d695";
+  # 0.1.2
+  image = "ghcr.io/cmu-web/cmu-web-forbes-and-moreword@sha256:8885d8bc563f038a94d8adfe015dcc0947144137509d40d757b565633eba376d";
 
   httpsOnly = ''
     if ($scheme = http) {
