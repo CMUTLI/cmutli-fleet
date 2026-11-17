@@ -24,7 +24,7 @@
 
     # Fleet-owned source repositories.
     cmu-web-kilt = {
-      url = "github:cmu-web/cmu-web-kilt/0.8.14";
+      url = "github:cmu-web/cmu-web-kilt/0.8.15";
       flake = false;
     };
 
