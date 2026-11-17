@@ -2,8 +2,9 @@
 
 let
   # The app (cmu-web/cmu-web-fencepost), pinned by digest. Null leaves the
-  # container and the site out; FencePost has no release yet.
-  image = null;
+  # container and the site out.
+  # 0.1.0
+  image = "ghcr.io/cmu-web/cmu-web-fencepost@sha256:7687d8302b838b83d3f3c86febded2c220bab0e20d80e7e442454f7cc9ea0110";
 
   httpsOnly = ''
     if ($scheme = http) {
