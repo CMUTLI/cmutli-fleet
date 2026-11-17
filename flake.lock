@@ -3,16 +3,16 @@
     "cmu-web-kilt": {
       "flake": false,
       "locked": {
-        "lastModified": 1794916445,
-        "narHash": "sha256-7By8A9+26BLUOEz5eBPPhfCYrWfGVlPAlvPdVjwxnVE=",
+        "lastModified": 1794917580,
+        "narHash": "sha256-iyrJ7VStmcQgscfzPQIA4f5SvhHNNNK9UrMcGyxZUQk=",
         "owner": "cmu-web",
         "repo": "cmu-web-kilt",
-        "rev": "650db7efbbbbc40e4a4f9c10cf403efe6b383269",
+        "rev": "010ee8c8b2aab23e13dec99871f838439e6cc17f",
         "type": "github"
       },
       "original": {
         "owner": "cmu-web",
-        "ref": "0.8.9",
+        "ref": "0.8.12",
         "repo": "cmu-web-kilt",
         "type": "github"
       }
@@ -111,14 +111,14 @@
     "jekyll-and-plaid-site": {
       "flake": false,
       "locked": {
-        "lastModified": 1794827817,
-        "narHash": "sha256-5gPQxW/Bu8oj/plwXMO7brIHZNljLxQdbkJwARH0nF4=",
+        "lastModified": 1794917523,
+        "narHash": "sha256-vdObD590ddrCb791MEmSaDs9m3MWl6lXlyjKCs+J+Rc=",
         "type": "tarball",
-        "url": "https://github.com/cmu-web/cmu-web-jekyll-and-plaid/releases/download/0.2.6/site.tar.gz"
+        "url": "https://github.com/cmu-web/cmu-web-jekyll-and-plaid/releases/download/0.2.7/site.tar.gz"
       },
       "original": {
         "type": "tarball",
-        "url": "https://github.com/cmu-web/cmu-web-jekyll-and-plaid/releases/download/0.2.6/site.tar.gz"
+        "url": "https://github.com/cmu-web/cmu-web-jekyll-and-plaid/releases/download/0.2.7/site.tar.gz"
       }
     },
     "nixpkgs": {
