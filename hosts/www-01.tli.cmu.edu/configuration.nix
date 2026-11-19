@@ -9,6 +9,7 @@
     ../../profiles/placemellon.andrew.cmu.edu.nix
     ../../profiles/qrnegie.andrew.cmu.edu.nix
     ../../profiles/webkilt.andrew.cmu.edu.nix
+    ../../profiles/www.tli.cmu.edu.nix
   ];
 
   boot.loader = {

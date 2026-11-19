@@ -3,16 +3,16 @@
     "cmu-web-kilt": {
       "flake": false,
       "locked": {
-        "lastModified": 1794939294,
-        "narHash": "sha256-UIdXmS9WgQ6VOrG3mG/15qcgZR348ztvuMNhyCagtAI=",
+        "lastModified": 1795116814,
+        "narHash": "sha256-YXBIoZqfJex2Z1MB/3XQ2GYmFPs7QIptpQbBmSwAm/4=",
         "owner": "cmu-web",
         "repo": "cmu-web-kilt",
-        "rev": "6cc54c0877c73c3fd49c831960e741c52c7ab484",
+        "rev": "f5eb02f88d029c3d483824075dec33ec4f325302",
         "type": "github"
       },
       "original": {
         "owner": "cmu-web",
-        "ref": "0.8.15",
+        "ref": "0.8.17",
         "repo": "cmu-web-kilt",
         "type": "github"
       }
@@ -65,6 +65,23 @@
         "lfs": true,
         "type": "git",
         "url": "ssh://git@github.com/CMUTLI/cmutli-fleet-vendor.git"
+      }
+    },
+    "cmutli-login-pages": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1795116866,
+        "narHash": "sha256-ly2zk4CNRoaFsbVNQBdU6w6Zmyg0j25qUf6WDbPIUf4=",
+        "owner": "CMUTLI",
+        "repo": "cmutli-login-pages",
+        "rev": "fa2f629e3f5f13f59384457ca9aa1526fc0eccec",
+        "type": "github"
+      },
+      "original": {
+        "owner": "CMUTLI",
+        "ref": "0.1.0",
+        "repo": "cmutli-login-pages",
+        "type": "github"
       }
     },
     "disko": {
@@ -158,6 +175,7 @@
         "cmutli-dashboards": "cmutli-dashboards",
         "cmutli-fleet-secrets": "cmutli-fleet-secrets",
         "cmutli-fleet-vendor": "cmutli-fleet-vendor",
+        "cmutli-login-pages": "cmutli-login-pages",
         "disko": "disko",
         "home-manager": "home-manager",
         "jekyll-and-plaid-site": "jekyll-and-plaid-site",

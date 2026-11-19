@@ -24,7 +24,7 @@
 
     # Fleet-owned source repositories.
     cmu-web-kilt = {
-      url = "github:cmu-web/cmu-web-kilt/0.8.15";
+      url = "github:cmu-web/cmu-web-kilt/0.8.17";
       flake = false;
     };
 
@@ -32,6 +32,13 @@
     # (a Jekyll build with the github-pages gem, as GitHub Pages does).
     jekyll-and-plaid-site = {
       url = "https://github.com/cmu-web/cmu-web-jekyll-and-plaid/releases/download/0.2.8/site.tar.gz";
+      flake = false;
+    };
+
+    # TLI's login pages, served at www.tli.cmu.edu/login/
+    # (profiles/www.tli.cmu.edu.nix).
+    cmutli-login-pages = {
+      url = "github:CMUTLI/cmutli-login-pages/0.1.0";
       flake = false;
     };
 
