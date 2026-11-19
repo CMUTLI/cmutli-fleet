@@ -1,7 +1,11 @@
-# forbesandmoreword.andrew.cmu.edu
+# themes.andrew.cmu.edu
 
-This document describes the production endpoint for the Forbes & Moreword docs
-site as configured by `cmutli-fleet`. The
+This document describes the production endpoint for the CMU Web themes' docs
+as configured by `cmutli-fleet`. Each theme's docs live in their own folder;
+the first is Forbes & Moreword's, at `/forbes-and-moreword/`. The root sends
+a 302 to the CMU Web home page until the themes have a page of their own.
+
+The rest of this document covers the Forbes & Moreword docs site. The
 [application repository](https://github.com/cmu-web/cmu-web-forbes-and-moreword)
 covers the theme, its development and releases.
 
@@ -14,8 +18,10 @@ posts, menu, footer and 404 page with WP-CLI on an empty database when the
 image is built. Nothing is
 edited in WordPress, so the database holds nothing that isn't in the
 repository. The service configuration is shared through
-`profiles/forbesandmoreword.andrew.cmu.edu.nix` and applied to
-`www-01.tli.cmu.edu`. `forbesandmoreword.andrew.cmu.edu` points to that host.
+`profiles/themes.andrew.cmu.edu.nix` and applied to
+`www-01.tli.cmu.edu`. `themes.andrew.cmu.edu` and the old
+`forbesandmoreword.andrew.cmu.edu` point to that host. The site's address,
+`https://themes.andrew.cmu.edu/forbes-and-moreword`, is built into the image.
 
 ## Runtime
 
@@ -76,10 +82,18 @@ the repository's `site/` folder and release them.
 
 ## Routing
 
-Nginx terminates TLS for `forbesandmoreword.andrew.cmu.edu`, with a certificate
-from ACME, and proxies to the container. HTTP requests get a 308 to HTTPS.
+Nginx terminates TLS for `themes.andrew.cmu.edu`, with a certificate from
+ACME, and proxies `/forbes-and-moreword/` to the container. HTTP requests get
+a 301 to HTTPS. Page requests keep the folder, since WordPress takes its own
+address off; requests for files (`wp-content/`, `wp-includes/` and
+`images/`) go without it, since Apache in the image keeps them at its root.
 Files in the repository's `site/static/images/` (the link preview and gallery
-card pictures) are served by the container as they are, at `/images/`.
+card pictures) are served by the container as they are, at
+`/forbes-and-moreword/images/`.
+
+For now, `forbesandmoreword.andrew.cmu.edu` has its own certificate and sends
+a 301 for every request to the same page under
+`https://themes.andrew.cmu.edu/forbes-and-moreword`.
 
 ## Operations
 
