@@ -38,7 +38,7 @@
     # TLI's login pages, served at www.tli.cmu.edu/login/
     # (profiles/www.tli.cmu.edu.nix).
     cmutli-login-pages = {
-      url = "github:CMUTLI/cmutli-login-pages/0.1.0";
+      url = "github:CMUTLI/cmutli-login-pages/0.2.0";
       flake = false;
     };
 

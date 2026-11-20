@@ -70,16 +70,16 @@
     "cmutli-login-pages": {
       "flake": false,
       "locked": {
-        "lastModified": 1795116866,
-        "narHash": "sha256-ly2zk4CNRoaFsbVNQBdU6w6Zmyg0j25qUf6WDbPIUf4=",
+        "lastModified": 1795150376,
+        "narHash": "sha256-WrS2o4d3r4ViqrHfznwNakV1pXq7FKPKrywnJuSI+7s=",
         "owner": "CMUTLI",
         "repo": "cmutli-login-pages",
-        "rev": "fa2f629e3f5f13f59384457ca9aa1526fc0eccec",
+        "rev": "8b8263a9e043e70692449bfeb2220d440f106d6d",
         "type": "github"
       },
       "original": {
         "owner": "CMUTLI",
-        "ref": "0.1.0",
+        "ref": "0.2.0",
         "repo": "cmutli-login-pages",
         "type": "github"
       }
