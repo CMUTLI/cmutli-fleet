@@ -128,14 +128,14 @@
     "jekyll-and-plaid-site": {
       "flake": false,
       "locked": {
-        "lastModified": 1794922510,
-        "narHash": "sha256-r6AMRHxPahfhIIgd+Ty/VO9eP6YLalZFVSA9TTdCb3o=",
+        "lastModified": 1795222944,
+        "narHash": "sha256-AcMNxavlTo+cpZcxCkcInLFwOWHSAzD+tISyjGN16fQ=",
         "type": "tarball",
-        "url": "https://github.com/cmu-web/cmu-web-jekyll-and-plaid/releases/download/0.2.8/site.tar.gz"
+        "url": "https://github.com/cmu-web/cmu-web-jekyll-and-plaid/releases/download/0.2.9/site.tar.gz"
       },
       "original": {
         "type": "tarball",
-        "url": "https://github.com/cmu-web/cmu-web-jekyll-and-plaid/releases/download/0.2.8/site.tar.gz"
+        "url": "https://github.com/cmu-web/cmu-web-jekyll-and-plaid/releases/download/0.2.9/site.tar.gz"
       }
     },
     "nixpkgs": {

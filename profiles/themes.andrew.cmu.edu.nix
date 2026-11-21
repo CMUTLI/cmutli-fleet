@@ -6,8 +6,8 @@ let
   # from the repository's site/ into SQLite, with
   # https://themes.andrew.cmu.edu/forbes-and-moreword as its address. Null
   # leaves the container and the site out.
-  # 0.1.3
-  image = "ghcr.io/cmu-web/cmu-web-forbes-and-moreword@sha256:e2e06b5b6ef23ca0e981ca7f0ae8929f59dc8e314a6f5aebe847ef63e8fe6490";
+  # 0.1.4
+  image = "ghcr.io/cmu-web/cmu-web-forbes-and-moreword@sha256:1a01f9d23ee6a8c36633320314b2d76a5e412f12a02701b76b2b750a6712f3b1";
 
   # Nobody edits this site through the web; the container returns 404 for
   # these too. The REST API's ?rest_route= form is closed with /wp-json/.
@@ -16,12 +16,21 @@ let
       return 404;
     }
   '';
+  # Each theme's docs live under the Web Kilt line the theme is built on
+  # (/0/ is the current CMU template), as on webkilt.andrew.cmu.edu; the
+  # theme's folder redirects to rootLine. The image is line 0's site, with
+  # that address built in.
   fam = "/forbes-and-moreword";
+  famLine = "${fam}/0";
+  rootLine = "0";
 in
 {
   imports = [
     ../modules/capabilities/nginx.nix
     ../modules/capabilities/podman.nix
+    # Hunt & Peck's docs and demo; it adds nothing until the theme's first
+    # release is a flake input
+    ./hunt-and-peck.themes.andrew.cmu.edu.nix
   ];
 
   config = lib.mkMerge [
@@ -67,32 +76,41 @@ in
         };
       };
 
-      # Forbes & Moreword at /forbes-and-moreword/. WordPress gets its pages
-      # with the folder still on (it takes its own address off), but Apache
-      # in the image keeps files at the root, so files go without it.
+      # Forbes & Moreword's line 0 at /forbes-and-moreword/0/. WordPress gets
+      # its pages with the folders still on (it takes its own address off),
+      # but Apache in the image keeps files at the root, so files go without
+      # them. The folder's root redirects to rootLine, temporarily, so
+      # browsers and search engines follow it when it changes; any other path
+      # outside a line is an address from before the line folders and gets a
+      # 301 to the same path under line 0.
       services.nginx.virtualHosts."themes.andrew.cmu.edu".locations = {
         "= ${fam}".return = "301 ${fam}/";
-        "${fam}/" = {
+        "= ${fam}/".return = "307 ${fam}/${rootLine}/";
+        "${fam}/".extraConfig = ''
+          rewrite ^${fam}(/.*)$ ${famLine}$1 permanent;
+        '';
+        "${famLine}/" = {
           proxyPass = "http://127.0.0.1:3004";
           extraConfig = noRest;
         };
-        "~ ^${fam}/(wp-content|wp-includes|images)/" = {
+        "~ ^${famLine}/(wp-content|wp-includes|images)/" = {
           proxyPass = "http://127.0.0.1:3004";
           extraConfig = ''
-            rewrite ^${fam}(/.*)$ $1 break;
+            rewrite ^${famLine}(/.*)$ $1 break;
           '';
         };
-        "~ ^${fam}/(wp-admin|wp-json)(/|$)".return = "404";
-        "~ ^${fam}/(wp-login|xmlrpc|wp-cron|wp-signup|wp-activate|wp-trackback|wp-links-opml|wp-mail|wp-comments-post)\\.php$".return =
+        "~ ^${fam}(/[0-9]+)?/(wp-admin|wp-json)(/|$)".return = "404";
+        "~ ^${fam}(/[0-9]+)?/(wp-login|xmlrpc|wp-cron|wp-signup|wp-activate|wp-trackback|wp-links-opml|wp-mail|wp-comments-post)\\.php$".return =
           "404";
       };
 
-      # The old address, for now: everything goes to the same page here.
+      # The old address, for now: everything goes to the same page under
+      # line 0.
       security.acme.certs."forbesandmoreword.andrew.cmu.edu".email = "certificates@tli.cmu.edu";
       services.nginx.virtualHosts."forbesandmoreword.andrew.cmu.edu" = {
         forceSSL = true;
         enableACME = true;
-        locations."/".return = "301 https://themes.andrew.cmu.edu${fam}$request_uri";
+        locations."/".return = "301 https://themes.andrew.cmu.edu${famLine}$request_uri";
       };
     })
   ];

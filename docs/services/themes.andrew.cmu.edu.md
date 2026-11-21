@@ -1,9 +1,16 @@
 # themes.andrew.cmu.edu
 
 This document describes the production endpoint for the CMU Web themes' docs
-as configured by `cmutli-fleet`. Each theme's docs live in their own folder;
-the first is Forbes & Moreword's, at `/forbes-and-moreword/`. The root sends
-a 302 to the CMU Web home page until the themes have a page of their own.
+as configured by `cmutli-fleet`. Each theme's docs live in their own folder,
+with a folder inside it for each Web Kilt line the theme is built on (`0/` is
+the current CMU template), as on `webkilt.andrew.cmu.edu`: Forbes & Moreword's
+at `/forbes-and-moreword/0/`, Jekyll & Plaid's at `/jekyll-and-plaid/0/`
+([its own document](jekyllandplaid.andrew.cmu.edu.md)) and Hunt & Peck's at
+`/hunt-and-peck/0/`, with a live demo at `/hunt-and-peck/0/demo/`
+([its own document](hunt-and-peck.themes.andrew.cmu.edu.md)). A theme's folder
+sends a 307 to its current line, so links name the folder and keep working
+when the line changes. The root sends a 302 to the CMU Web home page until the
+themes have a page of their own.
 
 The rest of this document covers the Forbes & Moreword docs site. The
 [application repository](https://github.com/cmu-web/cmu-web-forbes-and-moreword)
@@ -21,7 +28,8 @@ repository. The service configuration is shared through
 `profiles/themes.andrew.cmu.edu.nix` and applied to
 `www-01.tli.cmu.edu`. `themes.andrew.cmu.edu` and the old
 `forbesandmoreword.andrew.cmu.edu` point to that host. The site's address,
-`https://themes.andrew.cmu.edu/forbes-and-moreword`, is built into the image.
+`https://themes.andrew.cmu.edu/forbes-and-moreword/0`, is built into the
+image.
 
 ## Runtime
 
@@ -83,17 +91,21 @@ the repository's `site/` folder and release them.
 ## Routing
 
 Nginx terminates TLS for `themes.andrew.cmu.edu`, with a certificate from
-ACME, and proxies `/forbes-and-moreword/` to the container. HTTP requests get
-a 301 to HTTPS. Page requests keep the folder, since WordPress takes its own
-address off; requests for files (`wp-content/`, `wp-includes/` and
-`images/`) go without it, since Apache in the image keeps them at its root.
+ACME, and proxies `/forbes-and-moreword/0/` to the container. HTTP requests
+get a 301 to HTTPS. Page requests keep the folders, since WordPress takes its
+own address off; requests for files (`wp-content/`, `wp-includes/` and
+`images/`) go without them, since Apache in the image keeps them at its root.
 Files in the repository's `site/static/images/` (the link preview and gallery
 card pictures) are served by the container as they are, at
-`/forbes-and-moreword/images/`.
+`/forbes-and-moreword/0/images/`.
+
+`/forbes-and-moreword/` sends a 307 to `/forbes-and-moreword/0/`. Any other
+path in the folder but outside a line is an address from before the line
+folders, and gets a 301 to the same path under `/forbes-and-moreword/0/`.
 
 For now, `forbesandmoreword.andrew.cmu.edu` has its own certificate and sends
 a 301 for every request to the same page under
-`https://themes.andrew.cmu.edu/forbes-and-moreword`.
+`https://themes.andrew.cmu.edu/forbes-and-moreword/0`.
 
 ## Operations
 

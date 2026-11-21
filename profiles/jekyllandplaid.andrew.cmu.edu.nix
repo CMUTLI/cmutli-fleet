@@ -3,14 +3,16 @@
 let
   # Each template line's docs site, served under its own number, as on
   # webkilt.andrew.cmu.edu: line 0 is the current CMU template. Each site is
-  # built by the theme's release workflow with --baseurl /<line> and pinned by
-  # a flake input. Add a line's input here when it ships.
+  # built by the theme's release workflow with --baseurl
+  # /jekyll-and-plaid/<line> and pinned by a flake input. Add a line's input
+  # here when it ships.
   lines = {
     "0" = inputs.jekyll-and-plaid-site;
   };
-  # The line that the site's root redirects to.
+  # The line that the folder's root redirects to.
   rootLine = "0";
-  site = pkgs.runCommand "jekyllandplaid-andrew-cmu-edu" { } (
+  jp = "/jekyll-and-plaid";
+  site = pkgs.runCommand "jekyll-and-plaid-docs" { } (
     "mkdir -p $out\n"
     + lib.concatStrings (lib.mapAttrsToList (line: src: "cp -r ${src} $out/${line}\n") lines)
   );
@@ -18,32 +20,25 @@ in
 {
   imports = [
     ../modules/capabilities/nginx.nix
+    ./themes.andrew.cmu.edu.nix
   ];
 
-  security.acme.certs."jekyllandplaid.andrew.cmu.edu".email = "certificates@tli.cmu.edu";
-
   # The theme's docs site (cmu-web/cmu-web-jekyll-and-plaid), built by its
-  # release workflow with the github-pages gem. A new name with no old
-  # http:// links to keep, so HTTP redirects to HTTPS. forceSSL would answer
-  # with a 301; this sends a 308, like the other sites, and leaves the ACME
-  # challenge location on port 80 alone.
+  # release workflow with the github-pages gem, at /jekyll-and-plaid/ on the
+  # themes host. Pages don't carry over between lines, so only the folder's
+  # root redirects; any other path outside a line is a 404. The redirect is
+  # temporary, so browsers and search engines follow rootLine when it changes.
+  services.nginx.virtualHosts."themes.andrew.cmu.edu".locations = {
+    "= ${jp}".return = "301 ${jp}/";
+    "= ${jp}/".return = "307 ${jp}/${rootLine}/";
+    "${jp}/".alias = "${site}/";
+  };
+
+  # The old address: every request goes to the same path under the new one.
+  security.acme.certs."jekyllandplaid.andrew.cmu.edu".email = "certificates@tli.cmu.edu";
   services.nginx.virtualHosts."jekyllandplaid.andrew.cmu.edu" = {
-    addSSL = true;
+    forceSSL = true;
     enableACME = true;
-    root = site;
-    # Pages don't carry over between lines, so only the root redirects; any
-    # other path outside a line is a 404. The redirect is temporary, so
-    # browsers and search engines follow rootLine when it changes.
-    locations."= /".extraConfig = ''
-      if ($scheme = http) {
-        return 308 https://$host$request_uri;
-      }
-      return 307 /${rootLine}/;
-    '';
-    locations."/".extraConfig = ''
-      if ($scheme = http) {
-        return 308 https://$host$request_uri;
-      }
-    '';
+    locations."/".return = "301 https://themes.andrew.cmu.edu${jp}$request_uri";
   };
 }
