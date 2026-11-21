@@ -3,8 +3,8 @@
 let
   # The app (cmu-web/cmu-web-fencepost), pinned by digest. Null leaves the
   # container and the site out.
-  # 0.2.2
-  image = "ghcr.io/cmu-web/cmu-web-fencepost@sha256:92b79b7780e1780343f15aae9ad358ec526af611c0f91e3d866d190191852e75";
+  # 0.2.3
+  image = "ghcr.io/cmu-web/cmu-web-fencepost@sha256:4b620eb1cd0c98606fa82569bfdf9ab8fb59345d2d321bf17c8b76a06514fdf5";
 
   httpsOnly = ''
     if ($scheme = http) {
