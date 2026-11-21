@@ -6,8 +6,8 @@ let
   # from the repository's site/ into SQLite, with
   # https://themes.andrew.cmu.edu/forbes-and-moreword as its address. Null
   # leaves the container and the site out.
-  # 0.1.4
-  image = "ghcr.io/cmu-web/cmu-web-forbes-and-moreword@sha256:1a01f9d23ee6a8c36633320314b2d76a5e412f12a02701b76b2b750a6712f3b1";
+  # 0.1.5
+  image = "ghcr.io/cmu-web/cmu-web-forbes-and-moreword@sha256:feaaa96d828b6077ed6cc04a87ecaedbe40bd2cfd610c4e0f62b8aa9c3b66617";
 
   # Nobody edits this site through the web; the container returns 404 for
   # these too. The REST API's ?rest_route= form is closed with /wp-json/.
