@@ -81,14 +81,11 @@ in
       # but Apache in the image keeps files at the root, so files go without
       # them. The folder's root redirects to rootLine, temporarily, so
       # browsers and search engines follow it when it changes; any other path
-      # outside a line is an address from before the line folders and gets a
-      # 301 to the same path under line 0.
+      # outside a line is a 404, as for every theme.
       services.nginx.virtualHosts."themes.andrew.cmu.edu".locations = {
         "= ${fam}".return = "301 ${fam}/";
         "= ${fam}/".return = "307 ${fam}/${rootLine}/";
-        "${fam}/".extraConfig = ''
-          rewrite ^${fam}(/.*)$ ${famLine}$1 permanent;
-        '';
+        "${fam}/".return = "404";
         "${famLine}/" = {
           proxyPass = "http://127.0.0.1:3004";
           extraConfig = noRest;

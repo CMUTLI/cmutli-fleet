@@ -100,8 +100,7 @@ card pictures) are served by the container as they are, at
 `/forbes-and-moreword/0/images/`.
 
 `/forbes-and-moreword/` sends a 307 to `/forbes-and-moreword/0/`. Any other
-path in the folder but outside a line is an address from before the line
-folders, and gets a 301 to the same path under `/forbes-and-moreword/0/`.
+path in the folder but outside a line is a 404, as for every theme.
 
 For now, `forbesandmoreword.andrew.cmu.edu` has its own certificate and sends
 a 301 for every request to the same page under
