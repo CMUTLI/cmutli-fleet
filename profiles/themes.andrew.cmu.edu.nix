@@ -28,9 +28,9 @@ in
   imports = [
     ../modules/capabilities/nginx.nix
     ../modules/capabilities/podman.nix
-    # Hunt & Peck's docs and demo; it adds nothing until the theme's first
+    # Scaife & Sound's docs and demo; it adds nothing until the theme's first
     # release is a flake input
-    ./hunt-and-peck.themes.andrew.cmu.edu.nix
+    ./scaife-and-sound.themes.andrew.cmu.edu.nix
   ];
 
   config = lib.mkMerge [
@@ -101,13 +101,19 @@ in
           "404";
       };
 
-      # The old address, for now: everything goes to the same page under
-      # line 0.
-      security.acme.certs."forbesandmoreword.andrew.cmu.edu".email = "certificates@tli.cmu.edu";
-      services.nginx.virtualHosts."forbesandmoreword.andrew.cmu.edu" = {
+      # The names people try for a CMU WordPress theme: each goes to Forbes &
+      # Moreword's docs, with its own certificate.
+      security.acme.certs."wordpress.andrew.cmu.edu".email = "certificates@tli.cmu.edu";
+      services.nginx.virtualHosts."wordpress.andrew.cmu.edu" = {
         forceSSL = true;
         enableACME = true;
-        locations."/".return = "301 https://themes.andrew.cmu.edu${famLine}$request_uri";
+        locations."/".return = "301 https://themes.andrew.cmu.edu${fam}/";
+      };
+      security.acme.certs."wp.andrew.cmu.edu".email = "certificates@tli.cmu.edu";
+      services.nginx.virtualHosts."wp.andrew.cmu.edu" = {
+        forceSSL = true;
+        enableACME = true;
+        locations."/".return = "301 https://themes.andrew.cmu.edu${fam}/";
       };
     })
   ];

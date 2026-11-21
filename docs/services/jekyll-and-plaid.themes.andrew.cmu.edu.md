@@ -1,9 +1,9 @@
-# jekyllandplaid.andrew.cmu.edu
+# jekyll-and-plaid.themes.andrew.cmu.edu
 
 This document describes the production endpoint for the Jekyll & Plaid docs
 site as configured by `cmutli-fleet`. The site is served at
 `https://themes.andrew.cmu.edu/jekyll-and-plaid/`, beside the other CMU Web
-themes' docs; `jekyllandplaid.andrew.cmu.edu` is its old address. The
+themes' docs. The
 [application repository](https://github.com/cmu-web/cmu-web-jekyll-and-plaid)
 covers the theme, its development and releases.
 
@@ -15,8 +15,7 @@ hosts its documentation, a static site with no server of its own. The
 service configuration is shared through
 `profiles/jekyllandplaid.andrew.cmu.edu.nix`, which adds its folder to
 `profiles/themes.andrew.cmu.edu.nix`'s host, and applied to
-`www-01.tli.cmu.edu`. `themes.andrew.cmu.edu` and
-`jekyllandplaid.andrew.cmu.edu` point to that host.
+`www-01.tli.cmu.edu`. `themes.andrew.cmu.edu` points to that host.
 
 ## Runtime
 
@@ -43,11 +42,6 @@ Nginx serves `/jekyll-and-plaid/` on `themes.andrew.cmu.edu` (see
 [themes.andrew.cmu.edu](themes.andrew.cmu.edu.md) for TLS). The folder's root
 sends a 307 to the current line, `/jekyll-and-plaid/0/`, so it can follow a
 new line later; any path outside a line is a 404.
-
-`jekyllandplaid.andrew.cmu.edu` keeps its own certificate and sends a 301 for
-every request to the same path under
-`https://themes.andrew.cmu.edu/jekyll-and-plaid`, so `/0/writing.html` goes
-to `/jekyll-and-plaid/0/writing.html`.
 
 ## Operations
 

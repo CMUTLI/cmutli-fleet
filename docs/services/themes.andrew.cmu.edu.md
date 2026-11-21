@@ -5,9 +5,9 @@ as configured by `cmutli-fleet`. Each theme's docs live in their own folder,
 with a folder inside it for each Web Kilt line the theme is built on (`0/` is
 the current CMU template), as on `webkilt.andrew.cmu.edu`: Forbes & Moreword's
 at `/forbes-and-moreword/0/`, Jekyll & Plaid's at `/jekyll-and-plaid/0/`
-([its own document](jekyllandplaid.andrew.cmu.edu.md)) and Hunt & Peck's at
-`/hunt-and-peck/0/`, with a live demo at `/hunt-and-peck/0/demo/`
-([its own document](hunt-and-peck.themes.andrew.cmu.edu.md)). A theme's folder
+([its own document](jekyll-and-plaid.themes.andrew.cmu.edu.md)) and Scaife & Sound's at
+`/scaife-and-sound/0/`, with a live demo at `/scaife-and-sound/0/demo/`
+([its own document](scaife-and-sound.themes.andrew.cmu.edu.md)). A theme's folder
 sends a 307 to its current line, so links name the folder and keep working
 when the line changes. The root sends a 302 to the CMU Web home page until the
 themes have a page of their own.
@@ -26,8 +26,8 @@ image is built. Nothing is
 edited in WordPress, so the database holds nothing that isn't in the
 repository. The service configuration is shared through
 `profiles/themes.andrew.cmu.edu.nix` and applied to
-`www-01.tli.cmu.edu`. `themes.andrew.cmu.edu` and the old
-`forbesandmoreword.andrew.cmu.edu` point to that host. The site's address,
+`www-01.tli.cmu.edu`. `themes.andrew.cmu.edu`, `wordpress.andrew.cmu.edu` and
+`wp.andrew.cmu.edu` point to that host. The site's address,
 `https://themes.andrew.cmu.edu/forbes-and-moreword/0`, is built into the
 image.
 
@@ -102,9 +102,9 @@ card pictures) are served by the container as they are, at
 `/forbes-and-moreword/` sends a 307 to `/forbes-and-moreword/0/`. Any other
 path in the folder but outside a line is a 404, as for every theme.
 
-For now, `forbesandmoreword.andrew.cmu.edu` has its own certificate and sends
-a 301 for every request to the same page under
-`https://themes.andrew.cmu.edu/forbes-and-moreword/0`.
+`wordpress.andrew.cmu.edu` and `wp.andrew.cmu.edu`, the names people try
+for a CMU WordPress theme, each have their own certificate and send a 301 to
+`https://themes.andrew.cmu.edu/forbes-and-moreword/`.
 
 ## Operations
 

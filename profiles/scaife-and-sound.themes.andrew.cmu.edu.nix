@@ -1,19 +1,19 @@
 { inputs, lib, ... }:
 
 let
-  # Hunt & Peck (cmu-web/cmu-web-hunt-and-peck) at a release: the repository
+  # Scaife & Sound (cmu-web/cmu-web-scaife-and-sound) at a release: the repository
   # at the tag, whose theme/ the demo wears, and the release's built docs
   # site (site.tar.gz, built with Docs & Donner), like jekyll-and-plaid-site.
   # It has no release yet, so there are no flake inputs and this file adds
   # nothing. After its first release, add to flake.nix's inputs:
-  #   hunt-and-peck = { url = "github:cmu-web/cmu-web-hunt-and-peck/0.1.0"; flake = false; };
-  #   hunt-and-peck-site = {
-  #     url = "https://github.com/cmu-web/cmu-web-hunt-and-peck/releases/download/0.1.0/site.tar.gz";
+  #   scaife-and-sound = { url = "github:cmu-web/cmu-web-scaife-and-sound/0.1.0"; flake = false; };
+  #   scaife-and-sound-site = {
+  #     url = "https://github.com/cmu-web/cmu-web-scaife-and-sound/releases/download/0.1.0/site.tar.gz";
   #     flake = false;
   #   };
   # and this file turns on as it stands.
-  hp = inputs.hunt-and-peck or null;
-  hpSite = inputs.hunt-and-peck-site or null;
+  hp = inputs.scaife-and-sound or null;
+  hpSite = inputs.scaife-and-sound-site or null;
 
   # Vaultwarden (dani-garcia/vaultwarden), pinned by digest, the same version
   # as vault.tli.cmu.edu but a separate container with nothing in common.
@@ -21,15 +21,15 @@ let
   image = "docker.io/vaultwarden/server@sha256:4fe17f415f90087377d37c755e0ea3cf189dcc6794e49cdd2a9adbb4937d9e1f";
 
   # The demo's whole vault: one made-up account, Andrew Carnegie
-  # (ac00@andrew.cmu.edu, with the password Hunt & Peck's docs publish), and
-  # made-up items. scripts/hunt-and-peck-demo-seed.py makes it. Each start
+  # (ac00@andrew.cmu.edu, with the password Scaife & Sound's docs publish), and
+  # made-up items. scripts/scaife-and-sound-demo-seed.py makes it. Each start
   # copies it into memory, so a restart puts the demo back as it was.
-  seed = ./hunt-and-peck-demo/seed.sqlite3;
+  seed = ./scaife-and-sound-demo/seed.sqlite3;
 
   # The theme's docs live under the Web Kilt line it's built on, as the other
   # themes' do, and the demo under the line, since it shows that line's
   # theme. The folder's root redirects to rootLine.
-  folder = "/hunt-and-peck";
+  folder = "/scaife-and-sound";
   line = "${folder}/0";
   demo = "${line}/demo";
   rootLine = "0";
@@ -54,7 +54,7 @@ in
 
   config = lib.mkIf (hp != null && hpSite != null) {
     home-manager.users.deploy = {
-      virtualisation.quadlet.containers.hunt-and-peck-demo = {
+      virtualisation.quadlet.containers.scaife-and-sound-demo = {
         autoStart = true;
         serviceConfig = {
           Restart = "always";
@@ -112,15 +112,15 @@ in
       };
 
       # Back to the seed every night, whatever happened during the day
-      systemd.user.services.hunt-and-peck-demo-reset = {
-        Unit.Description = "Put the Hunt & Peck demo back to its seed";
+      systemd.user.services.scaife-and-sound-demo-reset = {
+        Unit.Description = "Put the Scaife & Sound demo back to its seed";
         Service = {
           Type = "oneshot";
-          ExecStart = "/run/current-system/sw/bin/systemctl --user restart hunt-and-peck-demo.service";
+          ExecStart = "/run/current-system/sw/bin/systemctl --user restart scaife-and-sound-demo.service";
         };
       };
-      systemd.user.timers.hunt-and-peck-demo-reset = {
-        Unit.Description = "Put the Hunt & Peck demo back to its seed nightly";
+      systemd.user.timers.scaife-and-sound-demo-reset = {
+        Unit.Description = "Put the Scaife & Sound demo back to its seed nightly";
         Timer = {
           OnCalendar = "*-*-* 04:00:00";
           Persistent = true;
@@ -129,7 +129,7 @@ in
       };
     };
 
-    # The docs site, static, and the demo, at /hunt-and-peck/ on the themes
+    # The docs site, static, and the demo, at /scaife-and-sound/ on the themes
     # host. Pages don't carry over between lines, so only the folder's root
     # redirects, temporarily, to rootLine; any other path outside a line is a
     # 404. Vaultwarden marks every demo page noindex itself.

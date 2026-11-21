@@ -1,11 +1,11 @@
-# Hunt & Peck on themes.andrew.cmu.edu
+# Scaife & Sound on themes.andrew.cmu.edu
 
-Hunt & Peck is a CMU look for Vaultwarden's web vault
-([repository](https://github.com/cmu-web/cmu-web-hunt-and-peck)). This
-service serves its docs at `https://themes.andrew.cmu.edu/hunt-and-peck/0/`
+Scaife & Sound is a CMU look for Vaultwarden's web vault
+([repository](https://github.com/cmu-web/cmu-web-scaife-and-sound)). This
+service serves its docs at `https://themes.andrew.cmu.edu/scaife-and-sound/0/`
 and a live demo, a Vaultwarden wearing the theme, at
-`https://themes.andrew.cmu.edu/hunt-and-peck/0/demo/`. The configuration is
-`profiles/hunt-and-peck.themes.andrew.cmu.edu.nix`, imported by
+`https://themes.andrew.cmu.edu/scaife-and-sound/0/demo/`. The configuration is
+`profiles/scaife-and-sound.themes.andrew.cmu.edu.nix`, imported by
 `profiles/themes.andrew.cmu.edu.nix` on `www-01.tli.cmu.edu`.
 
 It has nothing to do with `vault.tli.cmu.edu`, TLI's real password manager:
@@ -13,27 +13,27 @@ a separate container, image pin, port and data, and no shared secrets.
 
 ## Turning It On
 
-The profile adds nothing until Hunt & Peck has a release and two flake
+The profile adds nothing until Scaife & Sound has a release and two flake
 inputs name it: the repository at the tag, for the theme the demo wears, and
 the release's built docs site (`site.tar.gz`, built with Docs & Donner).
 After the release, add to `flake.nix`'s inputs:
 
 ```nix
-hunt-and-peck = { url = "github:cmu-web/cmu-web-hunt-and-peck/0.1.0"; flake = false; };
-hunt-and-peck-site = {
-  url = "https://github.com/cmu-web/cmu-web-hunt-and-peck/releases/download/0.1.0/site.tar.gz";
+scaife-and-sound = { url = "github:cmu-web/cmu-web-scaife-and-sound/0.1.0"; flake = false; };
+scaife-and-sound-site = {
+  url = "https://github.com/cmu-web/cmu-web-scaife-and-sound/releases/download/0.1.0/site.tar.gz";
   flake = false;
 };
 ```
 
-then `nix flake update hunt-and-peck hunt-and-peck-site`, commit and deploy
+then `nix flake update scaife-and-sound scaife-and-sound-site`, commit and deploy
 `www-01`. To move to a new release, change both tags and update both
 inputs.
 
 ## The Demo
 
 Every visitor signs in to the same made-up account, Andrew Carnegie
-(`ac00@andrew.cmu.edu`), with the password Hunt & Peck's docs publish. So the
+(`ac00@andrew.cmu.edu`), with the password Scaife & Sound's docs publish. So the
 demo is built to hold nothing and keep nothing:
 
 - **Read-only at the edge.** nginx passes only GET and HEAD to Vaultwarden,
@@ -43,7 +43,7 @@ demo is built to hold nothing and keep nothing:
   Send are refused with 403 before Vaultwarden sees them. `/admin` is 404.
 - **Nothing on disk.** The container's root is read-only and its data is a
   64 MB tmpfs. At each start it copies the seed,
-  `profiles/hunt-and-peck-demo/seed.sqlite3`, into memory. A timer restarts
+  `profiles/scaife-and-sound-demo/seed.sqlite3`, into memory. A timer restarts
   it at 4 a.m. every night, and any restart puts it back as seeded.
 - **Vaultwarden's own limits:** sign-ups, invitations, Sends, emergency
   access, organizations, attachments, password hints and icon downloads are
@@ -59,15 +59,15 @@ nightly reset.
 
 ## The Seed
 
-`scripts/hunt-and-peck-demo-seed.py` makes the seed with Hunt & Peck's own
+`scripts/scaife-and-sound-demo-seed.py` makes the seed with Scaife & Sound's own
 test helpers: it runs the pinned Vaultwarden with sign-ups on, on loopback
 only, makes the account and items, and copies out the database with its
-devices removed. Run it from a Hunt & Peck checkout's test environment
+devices removed. Run it from a Scaife & Sound checkout's test environment
 (Python with `test/requirements.txt` and Playwright's Chromium, Node, Docker
 or Podman):
 
 ```console
-python3 scripts/hunt-and-peck-demo-seed.py ../cmu-web-hunt-and-peck
+python3 scripts/scaife-and-sound-demo-seed.py ../cmu-web-scaife-and-sound
 ```
 
 Vaultwarden migrates an older seed itself when it starts, so a Vaultwarden

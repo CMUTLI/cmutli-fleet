@@ -1,15 +1,15 @@
-"""Makes the Hunt & Peck demo's starting vault: profiles/hunt-and-peck-demo/seed.sqlite3.
+"""Makes the Scaife & Sound demo's starting vault: profiles/scaife-and-sound-demo/seed.sqlite3.
 
-  python3 scripts/hunt-and-peck-demo-seed.py PATH/TO/cmu-web-hunt-and-peck [VAULTWARDEN_IMAGE]
+  python3 scripts/scaife-and-sound-demo-seed.py PATH/TO/cmu-web-scaife-and-sound [VAULTWARDEN_IMAGE]
 
 Runs Vaultwarden (the image the demo runs, by default) with sign-ups on, on
-loopback only, makes the made-up account and items with Hunt & Peck's own
+loopback only, makes the made-up account and items with Scaife & Sound's own
 test helpers (test/browser.py's register, test/seed.py through the Bitwarden
 CLI), stops it and copies out the database. Nothing in it is real: the
 account is Andrew Carnegie (ac00@andrew.cmu.edu) with the test's published
 password, and the items are made-up.
 
-Needs Docker or Podman, Python with Hunt & Peck's test/requirements.txt and
+Needs Docker or Podman, Python with Scaife & Sound's test/requirements.txt and
 Playwright's Chromium, Node (for the Bitwarden CLI) and sqlite3. Run it again
 after a Vaultwarden upgrade only if the demo's database won't open; Vaultwarden
 migrates an older database itself on start.
@@ -28,7 +28,7 @@ import urllib.request
 from pathlib import Path
 
 FLEET = Path(__file__).resolve().parent.parent
-OUT = FLEET / "profiles" / "hunt-and-peck-demo" / "seed.sqlite3"
+OUT = FLEET / "profiles" / "scaife-and-sound-demo" / "seed.sqlite3"
 IMAGE = "docker.io/vaultwarden/server@sha256:4fe17f415f90087377d37c755e0ea3cf189dcc6794e49cdd2a9adbb4937d9e1f"
 BW_CLI = "@bitwarden/cli@2026.11.0"
 
@@ -44,7 +44,7 @@ def main():
     hp = Path(sys.argv[1]).resolve()
     image = sys.argv[2] if len(sys.argv) > 2 else IMAGE
     sys.path.insert(0, str(hp / "test"))
-    import browser  # Hunt & Peck's own helpers
+    import browser  # Scaife & Sound's own helpers
 
     engine = shutil.which("docker") or shutil.which("podman")
     if not engine:

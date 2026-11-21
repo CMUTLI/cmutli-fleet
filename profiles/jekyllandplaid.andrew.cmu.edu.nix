@@ -33,12 +33,4 @@ in
     "= ${jp}/".return = "307 ${jp}/${rootLine}/";
     "${jp}/".alias = "${site}/";
   };
-
-  # The old address: every request goes to the same path under the new one.
-  security.acme.certs."jekyllandplaid.andrew.cmu.edu".email = "certificates@tli.cmu.edu";
-  services.nginx.virtualHosts."jekyllandplaid.andrew.cmu.edu" = {
-    forceSSL = true;
-    enableACME = true;
-    locations."/".return = "301 https://themes.andrew.cmu.edu${jp}$request_uri";
-  };
 }
