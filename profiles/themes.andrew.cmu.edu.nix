@@ -7,7 +7,7 @@ let
   # https://themes.andrew.cmu.edu/forbes-and-moreword as its address. Null
   # leaves the container and the site out.
   # 0.1.8
-  image = "ghcr.io/cmu-web/cmu-web-forbes-and-moreword@sha256:a7c2e168a33b31d391831522b67b8a51a7d848ba819fc7b2c3f1b64277a9f319";
+  image = "ghcr.io/cmu-web/cmu-web-forbes-and-moreword@sha256:7b6d80ff33667554d0ad035e9d6f40e28c7e1399256b3ffef4c0a034e66fc55f";
 
   # Nobody edits this site through the web; the container returns 404 for
   # these too. The REST API's ?rest_route= form is closed with /wp-json/.
