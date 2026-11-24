@@ -39,11 +39,11 @@
     # the repository at the release, for the theme and the demo's settings,
     # and the release's built docs site.
     kith-and-kirr = {
-      url = "github:cmu-web/cmu-web-kith-and-kirr/0.1.0";
+      url = "github:cmu-web/cmu-web-kith-and-kirr/0.1.1";
       flake = false;
     };
     kith-and-kirr-site = {
-      url = "https://github.com/cmu-web/cmu-web-kith-and-kirr/releases/download/0.1.0/site.tar.gz";
+      url = "https://github.com/cmu-web/cmu-web-kith-and-kirr/releases/download/0.1.1/site.tar.gz";
       flake = false;
     };
 
