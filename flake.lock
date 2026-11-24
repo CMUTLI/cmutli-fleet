@@ -3,16 +3,16 @@
     "cmu-web-kilt": {
       "flake": false,
       "locked": {
-        "lastModified": 1795466546,
-        "narHash": "sha256-FeVhNES62qR2fxJNnrbHqh0GMvH+hDwA8kgvaUfxajQ=",
+        "lastModified": 1795481022,
+        "narHash": "sha256-dHItW3VPjmtpQKQENea7w0Nw2h60f5qp7LMVlk7Walc=",
         "owner": "cmu-web",
         "repo": "cmu-web-kilt",
-        "rev": "260b25d80c44d3f2f5ceb15e75687838a3d59cb6",
+        "rev": "045856cc8c97ddb3fd82c6f5153c49dde3208990",
         "type": "github"
       },
       "original": {
         "owner": "cmu-web",
-        "ref": "0.8.28",
+        "ref": "0.8.29",
         "repo": "cmu-web-kilt",
         "type": "github"
       }
