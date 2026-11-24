@@ -49,7 +49,7 @@ an nginx in front, each pinned by digest.
 Grouper's settings are built from the release when the system is built:
 the theme's lines, sign-in by `X-Remote-User`, the demo's tagline, and
 `grouper.properties` from `demo/groups.yaml`'s settings (written by the
-repository's `dev/load.py`, as in development), once writable and once with
+loader, as `make run` does in development), once writable and once with
 `demo/grouper.properties` added. A small start script copies them into
 Grouper's `WEB-INF/classes`, adds the theme's CSRFGuard line to the file
 Grouper ships, and starts Grouper.
@@ -60,8 +60,11 @@ Grouper's own scheduled jobs can't rebuild a read-only Grouper, so a user
 timer, `kith-and-kirr-demo-rebuild`, runs at 3 a.m.: it stops the demo,
 deletes the database's volume, starts Grouper writable (a flag file in
 `~deploy/.local/state/kith-and-kirr-demo/`), loads `demo/groups.yaml` with
-`dev/load.py` and its checks, then restarts Grouper read-only and the demo's
-nginx. The demo is down for those few minutes.
+the loader the repository's `make seed` runs (`dev/load.py`) and waits for
+its checks, then restarts Grouper read-only and the demo's nginx. The demo
+is down for those few minutes. If Grouper doesn't answer within 10 minutes,
+or the checks still fail after 10 more, the rebuild stops with an error; the
+demo then comes back empty until the rebuild runs again.
 
 After the first deploy, build the demo once by hand:
 

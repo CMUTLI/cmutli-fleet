@@ -134,12 +134,17 @@ let
     podman volume rm --force ${db}
     touch ${state}/load
     systemctl --user start ${db}.service ${grouper}.service
+    up=
     for _ in $(seq 1 120); do
       code=$(podman exec ${grouper} curl -s -o /dev/null -w '%{http_code}' \
         "http://127.0.0.1:8080/grouper/grouperUi/app/UiV2Main.index?operation=UiV2Main.indexMain" || true)
-      case "$code" in 200 | 302) break ;; esac
+      case "$code" in 200 | 302) up=1; break ;; esac
       sleep 5
     done
+    if [ -z "$up" ]; then
+      echo "Grouper didn't answer within 10 minutes" >&2
+      exit 1
+    fi
     python3 ${kk}/dev/load.py --engine podman --container ${grouper} --db-container ${db} \
       --yaml ${kk}/demo/groups.yaml --properties ${conf}/grouper.properties.load \
       --gsh ${state}/load.gsh

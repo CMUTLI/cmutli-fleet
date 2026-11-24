@@ -141,16 +141,16 @@
     "kith-and-kirr": {
       "flake": false,
       "locked": {
-        "lastModified": 1795517833,
-        "narHash": "sha256-MgmvzbckGGNB2wV4Jr8Xz6Kr7n4zsEOBXw+u2SllW9Y=",
+        "lastModified": 1795545383,
+        "narHash": "sha256-4r0SZtNfJoUxlS5YAWOJU8Zrm/yaZpZenCgu1+DqPmI=",
         "owner": "cmu-web",
         "repo": "cmu-web-kith-and-kirr",
-        "rev": "bc450ec955e93b1577741787b74900837249fae2",
+        "rev": "b6bcb03865c2d6b900d8c0039bbe6a43da5c8a07",
         "type": "github"
       },
       "original": {
         "owner": "cmu-web",
-        "ref": "0.1.1",
+        "ref": "0.1.2",
         "repo": "cmu-web-kith-and-kirr",
         "type": "github"
       }
@@ -158,14 +158,14 @@
     "kith-and-kirr-site": {
       "flake": false,
       "locked": {
-        "lastModified": 1795517885,
-        "narHash": "sha256-3rErVRYCFQQjkkQh4NDEFhAN5k/iNnjyLUk/Vka3Rhw=",
+        "lastModified": 1795545430,
+        "narHash": "sha256-bJSKG7FGgHmDRLDk7Lkc5DPE9BP/nq2+S74CsKQp/JA=",
         "type": "tarball",
-        "url": "https://github.com/cmu-web/cmu-web-kith-and-kirr/releases/download/0.1.1/site.tar.gz"
+        "url": "https://github.com/cmu-web/cmu-web-kith-and-kirr/releases/download/0.1.2/site.tar.gz"
       },
       "original": {
         "type": "tarball",
-        "url": "https://github.com/cmu-web/cmu-web-kith-and-kirr/releases/download/0.1.1/site.tar.gz"
+        "url": "https://github.com/cmu-web/cmu-web-kith-and-kirr/releases/download/0.1.2/site.tar.gz"
       }
     },
     "nixpkgs": {
