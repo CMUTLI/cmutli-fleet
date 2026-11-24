@@ -35,6 +35,18 @@
       flake = false;
     };
 
+    # Kith & Kirr, a Grouper theme (profiles/kith-and-kirr.themes.andrew.cmu.edu.nix):
+    # the repository at the release, for the theme and the demo's settings,
+    # and the release's built docs site.
+    kith-and-kirr = {
+      url = "github:cmu-web/cmu-web-kith-and-kirr/0.1.0";
+      flake = false;
+    };
+    kith-and-kirr-site = {
+      url = "https://github.com/cmu-web/cmu-web-kith-and-kirr/releases/download/0.1.0/site.tar.gz";
+      flake = false;
+    };
+
     # TLI's login pages, served at www.tli.cmu.edu/login/
     # (profiles/www.tli.cmu.edu.nix).
     cmutli-login-pages = {

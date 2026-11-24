@@ -7,7 +7,9 @@ the current CMU template), as on `webkilt.andrew.cmu.edu`: Forbes & Moreword's
 at `/forbes-and-moreword/0/`, Jekyll & Plaid's at `/jekyll-and-plaid/0/`
 ([its own document](jekyll-and-plaid.themes.andrew.cmu.edu.md)) and Scaife & Sound's at
 `/scaife-and-sound/0/`, with a live demo at `/scaife-and-sound/0/demo/`
-([its own document](scaife-and-sound.themes.andrew.cmu.edu.md)). A theme's folder
+([its own document](scaife-and-sound.themes.andrew.cmu.edu.md)). Kith & Kirr's, the Grouper theme, are at
+`/kith-and-kirr/0/`, with a live demo at `/kith-and-kirr/0/demo/`
+([its own document](kith-and-kirr.themes.andrew.cmu.edu.md)). A theme's folder
 sends a 307 to its current line, so links name the folder and keep working
 when the line changes. The root sends a 302 to the CMU Web home page until the
 themes have a page of their own.

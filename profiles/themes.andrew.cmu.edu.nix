@@ -31,6 +31,8 @@ in
     # Scaife & Sound's docs and demo; it adds nothing until the theme's first
     # release is a flake input
     ./scaife-and-sound.themes.andrew.cmu.edu.nix
+    # Kith & Kirr's docs and its live demo, a read-only Grouper
+    ./kith-and-kirr.themes.andrew.cmu.edu.nix
   ];
 
   config = lib.mkMerge [
