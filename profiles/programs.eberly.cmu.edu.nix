@@ -3,8 +3,8 @@
 let
   # The app (CMUEberlyCenter/cmueberlycenter-programs), pinned by digest. Null
   # leaves the app's container and its nightly chores out.
-  # 0.1.0
-  image = "ghcr.io/cmueberlycenter/cmueberlycenter-programs@sha256:e4db7dd87a87f76353ef1c5c0b8476f8987c9d3af43e7f8e40d46d535ebd47f6";
+  # 0.1.1
+  image = "ghcr.io/cmueberlycenter/cmueberlycenter-programs@sha256:a324e9e5cf1314548bbfb7af9ac8246f51591459a84aea575b4442a0550c39f9";
 
   # The demo runs Rails in development: the developer sign-in and made-up
   # data only. False runs it in production.
