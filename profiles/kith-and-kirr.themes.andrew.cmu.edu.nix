@@ -76,12 +76,15 @@ let
 
   # Grouper's start: its settings files copied into place (the CSRFGuard line
   # added to the file Grouper ships), grouper.properties writable only while
-  # the nightly rebuild has left its load flag, then the image's own start
+  # the nightly rebuild has left its load flag, the daemon only then, and the
+  # image's own start
   classes = "/opt/grouper/grouperWebapp/WEB-INF/classes";
   start = pkgs.writeText "kith-and-kirr-grouper-start.sh" ''
     set -e
     mode=demo
     if [ -e /kith-and-kirr/state/load ]; then mode=load; fi
+    # The read-only demo runs no daemon: every job it runs writes, and fails
+    if [ "$mode" = demo ]; then export GROUPER_DAEMON=false; fi
     cp /kith-and-kirr/conf/grouper.properties.$mode ${classes}/grouper.properties
     cp /kith-and-kirr/conf/grouper-ui.properties ${classes}/grouper-ui.properties
     cp /kith-and-kirr/conf/grouper.text.en.us.properties ${classes}/grouperText/grouper.text.en.us.properties
@@ -254,7 +257,8 @@ in
                 GROUPER_REDIRECT_FROM_SLASH_TO_GROUPER = "false";
                 GROUPER_MAX_MEMORY = "768m";
                 GROUPER_CHOWN_DIRS = "false";
-                # Composite groups get their members from the daemon; a new
+                # The daemon runs while the rebuild loads, as in a real
+                # Grouper (the read-only demo turns it off at start); a new
                 # database starts without the membership cache the check
                 # would wait for
                 GROUPER_DAEMON = "true";
