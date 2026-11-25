@@ -128,14 +128,14 @@
     "jekyll-and-plaid-site": {
       "flake": false,
       "locked": {
-        "lastModified": 1795275338,
-        "narHash": "sha256-qaDPLDJ1lg87uXAqn7M6exgalrB6n+yyizQ9QqWKDOM=",
+        "lastModified": 1795588757,
+        "narHash": "sha256-gJj1BLNNLCMg0IPwxjxUwmzjO98BRaww5wc+g55MSd4=",
         "type": "tarball",
-        "url": "https://github.com/cmu-web/cmu-web-jekyll-and-plaid/releases/download/0.2.10/site.tar.gz"
+        "url": "https://github.com/cmu-web/cmu-web-jekyll-and-plaid/releases/download/0.2.13/site.tar.gz"
       },
       "original": {
         "type": "tarball",
-        "url": "https://github.com/cmu-web/cmu-web-jekyll-and-plaid/releases/download/0.2.10/site.tar.gz"
+        "url": "https://github.com/cmu-web/cmu-web-jekyll-and-plaid/releases/download/0.2.13/site.tar.gz"
       }
     },
     "kith-and-kirr": {
