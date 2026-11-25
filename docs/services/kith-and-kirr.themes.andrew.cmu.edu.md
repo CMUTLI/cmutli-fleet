@@ -62,9 +62,10 @@ deletes the database's volume, starts Grouper writable (a flag file in
 `~deploy/.local/state/kith-and-kirr-demo/`), loads `demo/groups.yaml` with
 the loader the repository's `make seed` runs (`dev/load.py`) and waits for
 its checks, then restarts Grouper read-only and the demo's nginx. The demo
-is down for those few minutes. If Grouper doesn't answer within 10 minutes,
-or the checks still fail after 10 more, the rebuild stops with an error; the
-demo then comes back empty until the rebuild runs again.
+is down for those few minutes. When Grouper's page hasn't answered after 10
+minutes, the load runs anyway; when the checks still fail after 10 more, the
+rebuild stops with an error and the demo comes back empty until the rebuild
+runs again.
 
 After the first deploy, build the demo once by hand:
 
@@ -72,6 +73,10 @@ After the first deploy, build the demo once by hand:
 sudo -u deploy XDG_RUNTIME_DIR=/run/user/$(id -u deploy) systemctl --user start kith-and-kirr-demo-rebuild
 ```
 
-Its output, including the checks, is in
-`journalctl --user -u kith-and-kirr-demo-rebuild` (as `deploy`), and the
-loader's GSH logs in `~deploy/.local/state/kith-and-kirr-demo/`.
+Each step, with its time, and the checks are in
+`~deploy/.local/state/kith-and-kirr-demo/rebuild.log`, with the loader's GSH
+logs beside it:
+
+```console
+sudo tail -40 ~deploy/.local/state/kith-and-kirr-demo/rebuild.log
+```

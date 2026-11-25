@@ -118,36 +118,48 @@ let
   # Every night, the demo starts over from an empty database: Grouper's own
   # jobs can't, once it's read-only. Grouper starts writable, the loader
   # builds demo/groups.yaml and checks it, and Grouper restarts read-only.
-  # nginx is down meanwhile, so nobody sees it half built.
+  # nginx is down meanwhile, so nobody sees it half built. Each step goes to
+  # rebuild.log in the state folder, with the time.
   rebuild = pkgs.writeShellScript "kith-and-kirr-demo-rebuild" ''
     set -eu
     export PATH=/run/current-system/sw/bin:${
       lib.makeBinPath [ (pkgs.python3.withPackages (ps: [ ps.pyyaml ])) ]
     }:$PATH
+    exec > >(tee ${state}/rebuild.log) 2>&1
+    step() { echo "$(date '+%F %T') $*"; }
     cleanup() {
+      rc=$?
+      if [ "$rc" != 0 ]; then step "failed (exit $rc) after the step above"; fi
+      step "restarting Grouper read-only and nginx"
       rm -f ${state}/load
       systemctl --user restart ${grouper}.service
       systemctl --user start ${web}.service
     }
     trap cleanup EXIT
+    step "stopping the demo and deleting its database"
     systemctl --user stop ${web}.service ${grouper}.service ${db}.service
     podman volume rm --force ${db}
     touch ${state}/load
+    step "starting Grouper writable"
     systemctl --user start ${db}.service ${grouper}.service
+    # Up once its page answers, or asks who's signing in (the check sends no
+    # user)
     up=
     for _ in $(seq 1 120); do
       code=$(podman exec ${grouper} curl -s -o /dev/null -w '%{http_code}' \
         "http://127.0.0.1:8080/grouper/grouperUi/app/UiV2Main.index?operation=UiV2Main.indexMain" || true)
-      case "$code" in 200 | 302) up=1; break ;; esac
+      case "$code" in 200 | 302 | 401 | 403) up=1; break ;; esac
       sleep 5
     done
-    if [ -z "$up" ]; then
-      echo "Grouper didn't answer within 10 minutes" >&2
-      exit 1
+    if [ -n "$up" ]; then
+      step "Grouper answered ($code); loading"
+    else
+      step "Grouper's page didn't answer within 10 minutes (last $code); loading anyway"
     fi
     python3 ${kk}/dev/load.py --engine podman --container ${grouper} --db-container ${db} \
       --yaml ${kk}/demo/groups.yaml --properties ${conf}/grouper.properties.load \
       --gsh ${state}/load.gsh
+    step "loaded and checked"
   '';
 in
 {
